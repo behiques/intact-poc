@@ -1,0 +1,9 @@
+# Assets folder for feature-specific static files
+
+This folder contains static assets that are specific to the awesome feature:
+- Images
+- Icons
+- SVG files
+- Other static resources
+
+Following the bulletproof-react pattern, these assets are scoped to this feature only.
