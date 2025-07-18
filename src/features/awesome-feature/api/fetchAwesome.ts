@@ -1,26 +1,33 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { useQuery } from '@tanstack/react-query'
 import { AwesomeApiResponse } from '../types'
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'
 
 // REST API call - bulletproof pattern keeps API logic in feature/api folder
-export const fetchAwesomeItems = async (page = 1, limit = 10): Promise<AwesomeApiResponse> => {
-  const response = await fetch(`${API_BASE_URL}/api/awesome?page=${page}&limit=${limit}`)
-  
+export const fetchAwesomeItems = async (
+  page = 1,
+  limit = 10
+): Promise<AwesomeApiResponse> => {
+  const response = await fetch(
+    `${API_BASE_URL}/api/awesome?page=${page}&limit=${limit}`
+  )
+
   if (!response.ok) {
     throw new Error(`Failed to fetch awesome items: ${response.statusText}`)
   }
-  
+
   return response.json()
 }
 
 export const fetchAwesomeItemById = async (id: string) => {
   const response = await fetch(`${API_BASE_URL}/api/awesome/${id}`)
-  
+
   if (!response.ok) {
     throw new Error(`Failed to fetch awesome item: ${response.statusText}`)
   }
-  
+
   return response.json()
 }
 
@@ -32,11 +39,11 @@ export const createAwesomeItem = async (data: any) => {
     },
     body: JSON.stringify(data),
   })
-  
+
   if (!response.ok) {
     throw new Error(`Failed to create awesome item: ${response.statusText}`)
   }
-  
+
   return response.json()
 }
 
