@@ -1,12 +1,24 @@
 @import 'tailwindcss';
 
+@theme {
+  --color-primary-light: #d9f4f5;
+  --color-primary-lightest: #f2fbfc;
+  --color-primary: #007b87;
+  --color-primary-active: #5eabb3;
+  --color-primary-active-tab: #00b3bc;
+  --color-primary-dark: #00626b;
+  --color-bg-secondary-01: #f5f8fa;
+  --color-primary-disabled: #e6eeef;
+  --color-panel-body: #f9f8fb;
+}
+
 @layer base {
   html {
     @apply h-full;
   }
 
   body {
-    @apply h-full bg-gray-50;
+    @apply bg-panel-body h-full;
   }
 }
 
