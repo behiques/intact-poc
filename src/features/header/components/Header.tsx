@@ -17,6 +17,7 @@ import {
   ToolsIcon,
 } from '../assets/Icons'
 import { useBusinessUnits } from '../hooks/useBusinessUnits'
+import { pathnameToTitle } from '@/utils/stringFormatter'
 
 const navLinks = [
   { href: '/', label: 'Dashboard' },
@@ -152,13 +153,18 @@ export const Header = () => {
           </div>
         </div>
       </div>
+
       <div className="-mt-1.5 flex justify-between space-x-4 border-y border-gray-300 px-4 py-1.5">
         <nav className="flex items-center space-x-2 text-sm text-black/70">
           <Link href="/">
             <HomeIcon />
           </Link>
-          <span>/</span>
-          <Link href="/submissions">Submissions</Link>
+          {pathname !== '/' && (
+            <>
+              <span className="text-gray-400">/</span>
+              <Link href={pathname}>{pathnameToTitle(pathname)}</Link>
+            </>
+          )}
         </nav>
         <div className="flex items-center space-x-2">
           <span className="font-semibold">Quick Links</span>
