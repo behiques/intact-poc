@@ -42,14 +42,14 @@
   - [x] 3.2 Create src/features/common/hooks/useAuthenticatedApi.ts for making authenticated requests with automatic token attachment
   - [x] 3.3 Add token management integration to existing TanStack Query setup in src/providers/react-query-provider.tsx
   - [x] 3.4 Implement proactive token refresh (5 minutes before expiration) with queue management for concurrent requests
-- [ ] 4.0 API Client Enhancement
-  - [x] 4.1 Create src/lib/apiClient.ts with automatic token attachment for all backend API requests
-  - [x] 4.2 Implement request interceptor to add Authorization header with current valid token
-  - [x] 4.3 Add response interceptor to detect 401 errors and trigger token refresh with request retry
-  - [x] 4.4 Create queue system to handle multiple simultaneous requests during token refresh operations
-  - [x] 4.5 Add environment-based URL routing (use BACKEND_API_URL for backend calls, existing NEXT_PUBLIC_API_URL for local APIs)
+- [x] 4.0 API Client Enhancement
+  - [x] 4.1 [Create a comprehensive HTTP client with interceptors and automatic token attachment]
+  - [x] 4.2 [Implement request interceptors to automatically attach tokens]
+  - [x] 4.3 [Implement response interceptors for 401 error handling]
+  - [x] 4.4 [Integrate the queue system for handling concurrent requests]
+  - [x] 4.5 [Create environment-based API client instances]
 - [ ] 5.0 Testing and Documentation
-  - [ ] 5.1 Write unit tests for token retrieval, decoding, storage, and store functionality
+  - [x] 5.1 Write unit tests for token retrieval, decoding, storage, and store functionality
   - [ ] 5.2 Create unit tests for useToken and useAuthenticatedApi hooks with mock scenarios
   - [ ] 5.3 Implement integration tests for token refresh flow and API client interceptors
   - [ ] 5.4 Add error handling tests for network failures, invalid tokens, and expired tokens
