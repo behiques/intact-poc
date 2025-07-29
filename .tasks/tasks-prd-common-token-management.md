@@ -1,40 +1,40 @@
 ## Relevant Files
 
 - `src/features/common/api/fetchToken.ts` - Core API functions for token retrieval and management
-- `src/features/common/api/fetchToken.test.ts` - Unit tests for token API functions
+- `__tests__/features/common/api/fetchToken.test.ts` - Unit tests for token API functions
 - `src/features/common/hooks/useToken.ts` - React hooks for token management and auto-refresh
-- `src/features/common/hooks/useToken.test.ts` - Unit tests for token hooks
+- `__tests__/features/common/hooks/useToken.test.ts` - Unit tests for token hooks
 - `src/features/common/hooks/useAuthenticatedApi.ts` - Hook for making authenticated API calls
-- `src/features/common/hooks/useAuthenticatedApi.test.ts` - Unit tests for authenticated API hook
+- `__tests__/features/common/hooks/useAuthenticatedApi.test.ts` - Unit tests for authenticated API hook
 - `src/features/common/types/index.ts` - TypeScript interfaces for token and API types
 - `src/features/common/utils/tokenDecoder.ts` - JWT token decoding utilities for expiration detection
-- `src/features/common/utils/tokenDecoder.test.ts` - Unit tests for token decoder
+- `__tests__/features/common/utils/tokenDecoder.test.ts` - Unit tests for token decoder
 - `src/features/common/utils/tokenStorage.ts` - Secure token storage utilities
-- `src/features/common/utils/tokenStorage.test.ts` - Unit tests for token storage
+- `__tests__/features/common/utils/tokenStorage.test.ts` - Unit tests for token storage
 - `src/features/common/stores/useTokenStore.ts` - Zustand store for token state management
-- `src/features/common/stores/useTokenStore.test.ts` - Unit tests for token store
+- `__tests__/features/common/stores/useTokenStore.test.ts` - Unit tests for token store
 - `src/lib/apiClient.ts` - Enhanced API client with automatic token attachment
-- `src/lib/apiClient.test.ts` - Unit tests for API client
+- `__tests__/lib/apiClient.test.ts` - Unit tests for API client
 - `.env.example` - Updated environment variables configuration
 
 ### Notes
 
-- Unit tests should typically be placed alongside the code files they are testing (e.g., `fetchToken.tsx` and `fetchToken.test.tsx` in the same directory).
-- Use `npx jest [optional/path/to/test/file]` to run tests. Running without a path executes all tests found by the Jest configuration.
+- Unit tests are located in the `__tests__` directory mirroring the `src` structure (e.g., `src/features/common/api/fetchToken.ts` has tests in `__tests__/features/common/api/fetchToken.test.ts`).
+- Use `pnpm test [optional/path/to/test/file]` to run tests. Running without a path executes all tests found by Vitest configuration.
 
 ## Tasks
 
-- [ ] 1.0 Environment Configuration and Setup
+- [x] 1.0 Environment Configuration and Setup
   - [x] 1.1 Add AUTH_TOKEN_API_URL, BACKEND_API_URL, and USER_SYSTEM_ID environment variables to .env.example
   - [x] 1.2 Create src/features/common directory with complete feature structure (api/, hooks/, types/, utils/, stores/ folders)
   - [x] 1.3 Create src/features/common/types/index.ts with TokenResponse, TokenState, AuthError, and TokenStorageData interfaces
   - [x] 1.4 Set up src/lib/env.ts to validate and export the new environment variables with proper TypeScript types
-- [ ] 2.0 Core Token Management Implementation
-  - [ ] 2.1 Implement src/features/common/api/fetchToken.ts with retrieveToken function including proper headers and error handling
-  - [ ] 2.2 Create src/features/common/utils/tokenDecoder.ts with JWT decode functionality to extract expiration without signature verification
-  - [ ] 2.3 Implement src/features/common/utils/tokenStorage.ts with secure storage, retrieval, and session clearing functions
-  - [ ] 2.4 Create src/features/common/stores/useTokenStore.ts with Zustand store for token state, loading states, and error management
-  - [ ] 2.5 Add token expiration checking logic and automatic refresh timing calculations
+- [x] 2.0 Core Token Management Implementation
+  - [x] 2.1 Implement src/features/common/api/fetchToken.ts with retrieveToken function including proper headers and error handling
+  - [x] 2.2 Create src/features/common/utils/tokenDecoder.ts with JWT decode functionality to extract expiration without signature verification
+  - [x] 2.3 Implement src/features/common/utils/tokenStorage.ts with secure storage, retrieval, and session clearing functions
+  - [x] 2.4 Create src/features/common/stores/useTokenStore.ts with Zustand store for token state, loading states, and error management
+  - [x] 2.5 Add token expiration checking logic and automatic refresh timing calculations
 - [ ] 3.0 React Hooks and Integration Layer
   - [ ] 3.1 Implement src/features/common/hooks/useToken.ts with auto-refresh logic, expiration detection, and error handling
   - [ ] 3.2 Create src/features/common/hooks/useAuthenticatedApi.ts for making authenticated requests with automatic token attachment
