@@ -50,7 +50,7 @@
   - [x] 4.5 [Create environment-based API client instances]
 - [ ] 5.0 Testing and Documentation
   - [x] 5.1 Write unit tests for token retrieval, decoding, storage, and store functionality
-  - [ ] 5.2 Create unit tests for useToken and useAuthenticatedApi hooks with mock scenarios
+  - [x] 5.2 Create unit tests for useToken and useAuthenticatedApi hooks with mock scenarios
   - [ ] 5.3 Implement integration tests for token refresh flow and API client interceptors
   - [ ] 5.4 Add error handling tests for network failures, invalid tokens, and expired tokens
   - [ ] 5.5 Create mock token provider for development/testing environments with configurable responses
