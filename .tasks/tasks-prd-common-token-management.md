@@ -37,17 +37,17 @@
   - [x] 2.3 Implement src/features/common/utils/tokenStorage.ts with secure storage, retrieval, and session clearing functions
   - [x] 2.4 Create src/features/common/stores/useTokenStore.ts with Zustand store for token state, loading states, and error management
   - [x] 2.5 Add token expiration checking logic and automatic refresh timing calculations
-- [ ] 3.0 React Hooks and Integration Layer
+- [x] 3.0 React Hooks and Integration Layer
   - [x] 3.1 Implement src/features/common/hooks/useToken.ts with auto-refresh logic, expiration detection, and error handling
   - [x] 3.2 Create src/features/common/hooks/useAuthenticatedApi.ts for making authenticated requests with automatic token attachment
   - [x] 3.3 Add token management integration to existing TanStack Query setup in src/providers/react-query-provider.tsx
   - [x] 3.4 Implement proactive token refresh (5 minutes before expiration) with queue management for concurrent requests
 - [ ] 4.0 API Client Enhancement
-  - [ ] 4.1 Create src/lib/apiClient.ts with automatic token attachment for all backend API requests
-  - [ ] 4.2 Implement request interceptor to add Authorization header with current valid token
-  - [ ] 4.3 Add response interceptor to detect 401 errors and trigger token refresh with request retry
-  - [ ] 4.4 Create queue system to handle multiple simultaneous requests during token refresh operations
-  - [ ] 4.5 Add environment-based URL routing (use BACKEND_API_URL for backend calls, existing NEXT_PUBLIC_API_URL for local APIs)
+  - [x] 4.1 Create src/lib/apiClient.ts with automatic token attachment for all backend API requests
+  - [x] 4.2 Implement request interceptor to add Authorization header with current valid token
+  - [x] 4.3 Add response interceptor to detect 401 errors and trigger token refresh with request retry
+  - [x] 4.4 Create queue system to handle multiple simultaneous requests during token refresh operations
+  - [x] 4.5 Add environment-based URL routing (use BACKEND_API_URL for backend calls, existing NEXT_PUBLIC_API_URL for local APIs)
 - [ ] 5.0 Testing and Documentation
   - [ ] 5.1 Write unit tests for token retrieval, decoding, storage, and store functionality
   - [ ] 5.2 Create unit tests for useToken and useAuthenticatedApi hooks with mock scenarios
