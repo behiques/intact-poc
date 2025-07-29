@@ -29,6 +29,18 @@ export interface TokenState {
   lastRefreshAt: number | null
 }
 
+// Queue Management Types
+export interface QueuedRequest {
+  /** Unique identifier for the queued request */
+  id: string
+  /** Promise resolve function to call when token is available */
+  resolve: (token: string) => void
+  /** Promise reject function to call if token refresh fails */
+  reject: (error: AuthError) => void
+  /** Timestamp when the request was queued */
+  queuedAt: number
+}
+
 // Error Types
 export interface AuthError {
   /** Error type classification */

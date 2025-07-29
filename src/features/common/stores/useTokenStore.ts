@@ -9,6 +9,13 @@ import {
 } from '../utils/tokenStorage'
 import { getTokenExpiration } from '../utils/tokenDecoder'
 import { retrieveToken, isAuthError } from '../api/fetchToken'
+import {
+  enqueueTokenRequest,
+  resolveQueuedRequests,
+  rejectQueuedRequests,
+  clearQueue,
+  cleanupExpiredRequests,
+} from '../utils/tokenQueue'
 
 /**
  * Token Store Interface
@@ -22,7 +29,11 @@ interface TokenStore extends TokenState {
   refreshToken: () => Promise<void>
   clearToken: () => void
   setError: (error: AuthError | null) => void
+  clearError: () => void
   reset: () => void
+
+  // Queue management
+  getValidToken: () => Promise<string>
 
   // Computed properties
   isTokenValid: () => boolean
@@ -60,7 +71,8 @@ const createStoreError = (
  * Token management store using Zustand
  *
  * Provides centralized state management for authentication tokens
- * with automatic persistence and error handling.
+ * with automatic persistence, error handling, and queue management
+ * for concurrent requests during token refresh.
  */
 export const useTokenStore = create<TokenStore>()(
   subscribeWithSelector((set, get) => ({
@@ -69,7 +81,7 @@ export const useTokenStore = create<TokenStore>()(
 
     // Initialize store from stored token
     initialize: async () => {
-      const state = get()
+      const state = get() as TokenStore
 
       // Don't initialize if already loading or has token
       if (state.isLoading || state.token) {
@@ -95,7 +107,7 @@ export const useTokenStore = create<TokenStore>()(
             clearStoredToken()
           }
 
-          await get().refreshToken()
+          await (get() as TokenStore).refreshToken()
         }
       } catch (error) {
         const authError = isAuthError(error)
@@ -113,9 +125,9 @@ export const useTokenStore = create<TokenStore>()(
       }
     },
 
-    // Refresh token from API
+    // Refresh token from API with queue management
     refreshToken: async () => {
-      const state = get()
+      const state = get() as TokenStore
 
       // Prevent concurrent refresh operations
       if (state.isRefreshing) {
@@ -125,6 +137,9 @@ export const useTokenStore = create<TokenStore>()(
       set({ isRefreshing: true, error: null })
 
       try {
+        // Clean up any expired requests before starting
+        cleanupExpiredRequests()
+
         const tokenResponse = await retrieveToken()
 
         // Parse expiration from response
@@ -162,6 +177,9 @@ export const useTokenStore = create<TokenStore>()(
           error: null,
           lastRefreshAt: Date.now(),
         })
+
+        // Resolve all queued requests with the new token
+        resolveQueuedRequests(tokenResponse.token)
       } catch (error) {
         const authError = isAuthError(error)
           ? error
@@ -180,6 +198,9 @@ export const useTokenStore = create<TokenStore>()(
           // Ignore storage cleanup errors
         }
 
+        // Reject all queued requests
+        rejectQueuedRequests(authError)
+
         throw authError
       }
     },
@@ -191,6 +212,9 @@ export const useTokenStore = create<TokenStore>()(
       } catch {
         // Ignore storage cleanup errors
       }
+
+      // Clear any pending queue
+      clearQueue()
 
       set({
         token: null,
@@ -207,15 +231,50 @@ export const useTokenStore = create<TokenStore>()(
       set({ error })
     },
 
+    // Clear error state
+    clearError: () => {
+      set({ error: null })
+    },
+
     // Reset to initial state
     reset: () => {
-      get().clearToken()
+      ;(get() as TokenStore).clearToken()
       set(initialState)
+    },
+
+    // Get a valid token, refreshing if necessary
+    getValidToken: async (): Promise<string> => {
+      const state = get() as TokenStore
+
+      // If we have a valid token, return it immediately
+      if (state.token && (get() as TokenStore).isTokenValid()) {
+        return state.token
+      }
+
+      // If refresh is already in progress, enqueue this request
+      if (state.isRefreshing) {
+        return enqueueTokenRequest()
+      }
+
+      // Otherwise, start a refresh
+      await (get() as TokenStore).refreshToken()
+
+      // After refresh, return the token if available
+      const newState = get() as TokenStore
+      if (newState.token && (get() as TokenStore).isTokenValid()) {
+        return newState.token
+      }
+
+      // If we still don't have a valid token, throw an error
+      throw createStoreError(
+        'AUTH_FAILED',
+        'Unable to obtain valid token after refresh'
+      )
     },
 
     // Check if current token is valid and not expired
     isTokenValid: () => {
-      const state = get()
+      const state = get() as TokenStore
 
       if (!state.token || !state.expiresAt) {
         return false
@@ -226,7 +285,7 @@ export const useTokenStore = create<TokenStore>()(
 
     // Get time until token expiration
     timeUntilExpiry: () => {
-      const state = get()
+      const state = get() as TokenStore
 
       if (!state.expiresAt) {
         return null
@@ -238,7 +297,7 @@ export const useTokenStore = create<TokenStore>()(
 
     // Check if token should be refreshed
     shouldRefresh: (thresholdMs: number = 5 * 60 * 1000) => {
-      const state = get()
+      const state = get() as TokenStore
 
       if (!state.token || !state.expiresAt) {
         return true
@@ -255,8 +314,8 @@ let refreshTimeoutId: NodeJS.Timeout | null = null
 
 // Subscribe to token state changes to set up auto-refresh
 useTokenStore.subscribe(
-  (state) => state,
-  (state) => {
+  (state: TokenState) => state,
+  (state: TokenState) => {
     // Clear existing timeout
     if (refreshTimeoutId) {
       clearTimeout(refreshTimeoutId)
@@ -271,7 +330,7 @@ useTokenStore.subscribe(
         refreshTimeoutId = setTimeout(() => {
           const currentState = useTokenStore.getState()
           if (currentState.token && !currentState.isRefreshing) {
-            currentState.refreshToken().catch((error) => {
+            currentState.refreshToken().catch((error: unknown) => {
               console.error('Auto token refresh failed:', error)
             })
           }
@@ -280,32 +339,3 @@ useTokenStore.subscribe(
     }
   }
 )
-
-/**
- * Hook to get token store state and actions
- * Provides a clean interface for components to interact with token management
- */
-export const useToken = () => {
-  const store = useTokenStore()
-
-  return {
-    // State
-    tokenState: {
-      token: store.token,
-      expiresAt: store.expiresAt,
-      isRefreshing: store.isRefreshing,
-      isLoading: store.isLoading,
-      error: store.error,
-      lastRefreshAt: store.lastRefreshAt,
-    },
-
-    // Actions
-    initialize: store.initialize,
-    refreshToken: store.refreshToken,
-    clearToken: store.clearToken,
-
-    // Computed
-    isTokenValid: store.isTokenValid(),
-    timeUntilExpiry: store.timeUntilExpiry(),
-  }
-}

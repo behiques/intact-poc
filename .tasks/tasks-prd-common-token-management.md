@@ -11,6 +11,8 @@
 - `__tests__/features/common/utils/tokenDecoder.test.ts` - Unit tests for token decoder
 - `src/features/common/utils/tokenStorage.ts` - Secure token storage utilities
 - `__tests__/features/common/utils/tokenStorage.test.ts` - Unit tests for token storage
+- `src/features/common/utils/tokenQueue.ts` - Queue management for concurrent token requests
+- `__tests__/features/common/utils/tokenQueue.test.ts` - Unit tests for token queue
 - `src/features/common/stores/useTokenStore.ts` - Zustand store for token state management
 - `__tests__/features/common/stores/useTokenStore.test.ts` - Unit tests for token store
 - `src/lib/apiClient.ts` - Enhanced API client with automatic token attachment
@@ -36,10 +38,10 @@
   - [x] 2.4 Create src/features/common/stores/useTokenStore.ts with Zustand store for token state, loading states, and error management
   - [x] 2.5 Add token expiration checking logic and automatic refresh timing calculations
 - [ ] 3.0 React Hooks and Integration Layer
-  - [ ] 3.1 Implement src/features/common/hooks/useToken.ts with auto-refresh logic, expiration detection, and error handling
-  - [ ] 3.2 Create src/features/common/hooks/useAuthenticatedApi.ts for making authenticated requests with automatic token attachment
-  - [ ] 3.3 Add token management integration to existing TanStack Query setup in src/providers/react-query-provider.tsx
-  - [ ] 3.4 Implement proactive token refresh (5 minutes before expiration) with queue management for concurrent requests
+  - [x] 3.1 Implement src/features/common/hooks/useToken.ts with auto-refresh logic, expiration detection, and error handling
+  - [x] 3.2 Create src/features/common/hooks/useAuthenticatedApi.ts for making authenticated requests with automatic token attachment
+  - [x] 3.3 Add token management integration to existing TanStack Query setup in src/providers/react-query-provider.tsx
+  - [x] 3.4 Implement proactive token refresh (5 minutes before expiration) with queue management for concurrent requests
 - [ ] 4.0 API Client Enhancement
   - [ ] 4.1 Create src/lib/apiClient.ts with automatic token attachment for all backend API requests
   - [ ] 4.2 Implement request interceptor to add Authorization header with current valid token
