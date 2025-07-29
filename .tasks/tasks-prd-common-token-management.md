@@ -1,0 +1,55 @@
+## Relevant Files
+
+- `src/features/common/api/fetchToken.ts` - Core API functions for token retrieval and management
+- `src/features/common/api/fetchToken.test.ts` - Unit tests for token API functions
+- `src/features/common/hooks/useToken.ts` - React hooks for token management and auto-refresh
+- `src/features/common/hooks/useToken.test.ts` - Unit tests for token hooks
+- `src/features/common/hooks/useAuthenticatedApi.ts` - Hook for making authenticated API calls
+- `src/features/common/hooks/useAuthenticatedApi.test.ts` - Unit tests for authenticated API hook
+- `src/features/common/types/index.ts` - TypeScript interfaces for token and API types
+- `src/features/common/utils/tokenDecoder.ts` - JWT token decoding utilities for expiration detection
+- `src/features/common/utils/tokenDecoder.test.ts` - Unit tests for token decoder
+- `src/features/common/utils/tokenStorage.ts` - Secure token storage utilities
+- `src/features/common/utils/tokenStorage.test.ts` - Unit tests for token storage
+- `src/features/common/stores/useTokenStore.ts` - Zustand store for token state management
+- `src/features/common/stores/useTokenStore.test.ts` - Unit tests for token store
+- `src/lib/apiClient.ts` - Enhanced API client with automatic token attachment
+- `src/lib/apiClient.test.ts` - Unit tests for API client
+- `.env.example` - Updated environment variables configuration
+
+### Notes
+
+- Unit tests should typically be placed alongside the code files they are testing (e.g., `fetchToken.tsx` and `fetchToken.test.tsx` in the same directory).
+- Use `npx jest [optional/path/to/test/file]` to run tests. Running without a path executes all tests found by the Jest configuration.
+
+## Tasks
+
+- [ ] 1.0 Environment Configuration and Setup
+  - [x] 1.1 Add AUTH_TOKEN_API_URL, BACKEND_API_URL, and USER_SYSTEM_ID environment variables to .env.example
+  - [x] 1.2 Create src/features/common directory with complete feature structure (api/, hooks/, types/, utils/, stores/ folders)
+  - [x] 1.3 Create src/features/common/types/index.ts with TokenResponse, TokenState, AuthError, and TokenStorageData interfaces
+  - [x] 1.4 Set up src/lib/env.ts to validate and export the new environment variables with proper TypeScript types
+- [ ] 2.0 Core Token Management Implementation
+  - [ ] 2.1 Implement src/features/common/api/fetchToken.ts with retrieveToken function including proper headers and error handling
+  - [ ] 2.2 Create src/features/common/utils/tokenDecoder.ts with JWT decode functionality to extract expiration without signature verification
+  - [ ] 2.3 Implement src/features/common/utils/tokenStorage.ts with secure storage, retrieval, and session clearing functions
+  - [ ] 2.4 Create src/features/common/stores/useTokenStore.ts with Zustand store for token state, loading states, and error management
+  - [ ] 2.5 Add token expiration checking logic and automatic refresh timing calculations
+- [ ] 3.0 React Hooks and Integration Layer
+  - [ ] 3.1 Implement src/features/common/hooks/useToken.ts with auto-refresh logic, expiration detection, and error handling
+  - [ ] 3.2 Create src/features/common/hooks/useAuthenticatedApi.ts for making authenticated requests with automatic token attachment
+  - [ ] 3.3 Add token management integration to existing TanStack Query setup in src/providers/react-query-provider.tsx
+  - [ ] 3.4 Implement proactive token refresh (5 minutes before expiration) with queue management for concurrent requests
+- [ ] 4.0 API Client Enhancement
+  - [ ] 4.1 Create src/lib/apiClient.ts with automatic token attachment for all backend API requests
+  - [ ] 4.2 Implement request interceptor to add Authorization header with current valid token
+  - [ ] 4.3 Add response interceptor to detect 401 errors and trigger token refresh with request retry
+  - [ ] 4.4 Create queue system to handle multiple simultaneous requests during token refresh operations
+  - [ ] 4.5 Add environment-based URL routing (use BACKEND_API_URL for backend calls, existing NEXT_PUBLIC_API_URL for local APIs)
+- [ ] 5.0 Testing and Documentation
+  - [ ] 5.1 Write unit tests for token retrieval, decoding, storage, and store functionality
+  - [ ] 5.2 Create unit tests for useToken and useAuthenticatedApi hooks with mock scenarios
+  - [ ] 5.3 Implement integration tests for token refresh flow and API client interceptors
+  - [ ] 5.4 Add error handling tests for network failures, invalid tokens, and expired tokens
+  - [ ] 5.5 Create mock token provider for development/testing environments with configurable responses
+  - [ ] 5.6 Add tests for session clearing on browser close and proper cleanup
