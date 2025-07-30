@@ -19,7 +19,7 @@ export const useToken = (): UseTokenReturn => {
   useEffect(() => {
     if (!initializedRef.current) {
       // Initialize the token store
-      store.initialize().catch((error) => {
+      store.initialize().catch((error: unknown) => {
         console.error('Failed to initialize token store:', error)
       })
 
@@ -92,7 +92,7 @@ export const useValidToken = (autoRefresh: boolean = true): UseTokenReturn => {
       !tokenData.isTokenValid &&
       !tokenData.tokenState.isRefreshing
     ) {
-      tokenData.refreshToken().catch((error) => {
+      tokenData.refreshToken().catch((error: unknown) => {
         console.error('Auto token refresh failed:', error)
       })
     }

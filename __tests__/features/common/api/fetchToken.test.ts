@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { retrieveToken } from './fetchToken'
+import { retrieveToken } from '@/features/common/api/fetchToken'
 import { env } from '@/utils/env'
 
 // Mock the env utility

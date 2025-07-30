@@ -3,7 +3,7 @@ import {
   decodeJWTPayload,
   getTokenExpiration,
   isTokenExpired,
-} from './tokenDecoder'
+} from '@/features/common/utils/tokenDecoder'
 
 describe('tokenDecoder', () => {
   beforeEach(() => {

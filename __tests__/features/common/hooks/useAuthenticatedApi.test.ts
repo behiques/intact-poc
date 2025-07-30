@@ -1,12 +1,12 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { renderHook, act } from '@testing-library/react'
-import { useAuthenticatedApi } from './useAuthenticatedApi'
+import { useAuthenticatedApi } from '@/features/common/hooks/useAuthenticatedApi'
 
 // Mock the token hooks
 const mockUseCurrentToken = vi.fn()
 const mockUseToken = vi.fn()
 
-vi.mock('./useToken', () => ({
+vi.mock('@/features/common/hooks/useToken', () => ({
   useCurrentToken: () => mockUseCurrentToken(),
   useToken: () => mockUseToken(),
 }))
@@ -21,14 +21,14 @@ const mockTokenStoreState = {
   lastRefreshAt: null,
 }
 
-vi.mock('../stores/useTokenStore', () => ({
+vi.mock('@/features/common/stores/useTokenStore', () => ({
   useTokenStore: {
     getState: vi.fn(() => mockTokenStoreState),
   },
 }))
 
 // Mock the token config
-vi.mock('../utils/config', () => ({
+vi.mock('@/features/common/utils/config', () => ({
   tokenConfig: {
     backendApiUrl: 'https://api.backend.com',
     authTokenApiUrl: 'https://auth.api.com',

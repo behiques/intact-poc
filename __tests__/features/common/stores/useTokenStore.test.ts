@@ -1,9 +1,9 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { act, renderHook } from '@testing-library/react'
-import { useTokenStore } from './useTokenStore'
+import { useTokenStore } from '@/features/common/stores/useTokenStore'
 
 // Mock the token storage utility
-vi.mock('../utils/tokenStorage', () => ({
+vi.mock('@/features/common/utils/tokenStorage', () => ({
   storeToken: vi.fn(),
   getStoredToken: vi.fn(),
   clearStoredToken: vi.fn(),
@@ -11,7 +11,7 @@ vi.mock('../utils/tokenStorage', () => ({
 }))
 
 // Mock the fetch token API
-vi.mock('../api/fetchToken', () => ({
+vi.mock('@/features/common/api/fetchToken', () => ({
   retrieveToken: vi.fn(),
 }))
 
@@ -34,28 +34,33 @@ describe('useTokenStore', () => {
       expect(result.current.token).toBeNull()
       expect(result.current.isLoading).toBe(false)
       expect(result.current.error).toBeNull()
-      expect(result.current.lastRefresh).toBeNull()
+      expect(result.current.lastRefreshAt).toBeNull()
       expect(result.current.expiresAt).toBeNull()
     })
   })
 
-  describe('setToken', () => {
-    it('should set token and expiration', () => {
+  describe('state management', () => {
+    it('should update state directly via setState', () => {
       const { result } = renderHook(() => useTokenStore())
       const token = 'test.jwt.token'
       const expiresAt = Date.now() + 3600000
 
       act(() => {
-        result.current.setToken(token, expiresAt)
+        useTokenStore.setState({
+          token,
+          expiresAt,
+          lastRefreshAt: Date.now(),
+          error: null,
+        })
       })
 
       expect(result.current.token).toBe(token)
       expect(result.current.expiresAt).toBe(expiresAt)
-      expect(result.current.lastRefresh).toBeCloseTo(Date.now(), -2) // Within 100ms
+      expect(result.current.lastRefreshAt).toBeCloseTo(Date.now(), -2) // Within 100ms
       expect(result.current.error).toBeNull()
     })
 
-    it('should clear error when setting token', () => {
+    it('should clear error when setting new state', () => {
       const { result } = renderHook(() => useTokenStore())
 
       // First set an error
@@ -69,9 +74,13 @@ describe('useTokenStore', () => {
 
       expect(result.current.error).not.toBeNull()
 
-      // Then set a token
+      // Then update state to clear error
       act(() => {
-        result.current.setToken('new.token', Date.now() + 3600000)
+        useTokenStore.setState({
+          token: 'new.token',
+          expiresAt: Date.now() + 3600000,
+          error: null,
+        })
       })
 
       expect(result.current.error).toBeNull()
@@ -84,7 +93,11 @@ describe('useTokenStore', () => {
 
       // First set a token
       act(() => {
-        result.current.setToken('test.token', Date.now() + 3600000)
+        useTokenStore.setState({
+          token: 'test.token',
+          expiresAt: Date.now() + 3600000,
+          lastRefreshAt: Date.now(),
+        })
       })
 
       expect(result.current.token).not.toBeNull()
@@ -96,24 +109,24 @@ describe('useTokenStore', () => {
 
       expect(result.current.token).toBeNull()
       expect(result.current.expiresAt).toBeNull()
-      expect(result.current.lastRefresh).toBeNull()
+      expect(result.current.lastRefreshAt).toBeNull()
     })
   })
 
-  describe('setLoading', () => {
-    it('should set loading state', () => {
+  describe('loading state', () => {
+    it('should manage loading state via setState', () => {
       const { result } = renderHook(() => useTokenStore())
 
       expect(result.current.isLoading).toBe(false)
 
       act(() => {
-        result.current.setLoading(true)
+        useTokenStore.setState({ isLoading: true })
       })
 
       expect(result.current.isLoading).toBe(true)
 
       act(() => {
-        result.current.setLoading(false)
+        useTokenStore.setState({ isLoading: false })
       })
 
       expect(result.current.isLoading).toBe(false)
@@ -162,16 +175,16 @@ describe('useTokenStore', () => {
     })
   })
 
-  describe('hasValidToken', () => {
+  describe('isTokenValid', () => {
     it('should return true for valid unexpired token', () => {
       const { result } = renderHook(() => useTokenStore())
       const futureTime = Date.now() + 3600000 // 1 hour from now
 
       act(() => {
-        result.current.setToken('valid.token', futureTime)
+        useTokenStore.setState({ token: 'valid.token', expiresAt: futureTime })
       })
 
-      expect(result.current.hasValidToken()).toBe(true)
+      expect(result.current.isTokenValid()).toBe(true)
     })
 
     it('should return false for expired token', () => {
@@ -179,51 +192,54 @@ describe('useTokenStore', () => {
       const pastTime = Date.now() - 3600000 // 1 hour ago
 
       act(() => {
-        result.current.setToken('expired.token', pastTime)
+        useTokenStore.setState({ token: 'expired.token', expiresAt: pastTime })
       })
 
-      expect(result.current.hasValidToken()).toBe(false)
+      expect(result.current.isTokenValid()).toBe(false)
     })
 
     it('should return false when no token exists', () => {
       const { result } = renderHook(() => useTokenStore())
 
-      expect(result.current.hasValidToken()).toBe(false)
+      expect(result.current.isTokenValid()).toBe(false)
     })
 
-    it('should consider buffer time', () => {
+    it('should consider buffer time via shouldRefresh', () => {
       const { result } = renderHook(() => useTokenStore())
       const soonToExpire = Date.now() + 30000 // 30 seconds from now
 
       act(() => {
-        result.current.setToken('soon.to.expire', soonToExpire)
+        useTokenStore.setState({
+          token: 'soon.to.expire',
+          expiresAt: soonToExpire,
+        })
       })
 
-      // Without buffer
-      expect(result.current.hasValidToken()).toBe(true)
+      // Token is still valid
+      expect(result.current.isTokenValid()).toBe(true)
 
-      // With 1 minute buffer
-      expect(result.current.hasValidToken(60000)).toBe(false)
+      // But should refresh with 1 minute buffer
+      expect(result.current.shouldRefresh(60000)).toBe(true)
     })
   })
 
-  describe('getTimeUntilExpiration', () => {
+  describe('timeUntilExpiry', () => {
     it('should return time until expiration', () => {
       const { result } = renderHook(() => useTokenStore())
       const futureTime = Date.now() + 3600000 // 1 hour from now
 
       act(() => {
-        result.current.setToken('test.token', futureTime)
+        useTokenStore.setState({ token: 'test.token', expiresAt: futureTime })
       })
 
-      const timeUntilExpiration = result.current.getTimeUntilExpiration()
+      const timeUntilExpiration = result.current.timeUntilExpiry()
       expect(timeUntilExpiration).toBeCloseTo(3600000, -3) // Within 1 second
     })
 
     it('should return null when no token exists', () => {
       const { result } = renderHook(() => useTokenStore())
 
-      expect(result.current.getTimeUntilExpiration()).toBeNull()
+      expect(result.current.timeUntilExpiry()).toBeNull()
     })
 
     it('should return negative value for expired token', () => {
@@ -231,10 +247,10 @@ describe('useTokenStore', () => {
       const pastTime = Date.now() - 3600000 // 1 hour ago
 
       act(() => {
-        result.current.setToken('expired.token', pastTime)
+        useTokenStore.setState({ token: 'expired.token', expiresAt: pastTime })
       })
 
-      const timeUntilExpiration = result.current.getTimeUntilExpiration()
+      const timeUntilExpiration = result.current.timeUntilExpiry()
       expect(timeUntilExpiration).toBeLessThan(0)
     })
   })
@@ -245,7 +261,10 @@ describe('useTokenStore', () => {
       const soonToExpire = Date.now() + 4 * 60 * 1000 // 4 minutes from now
 
       act(() => {
-        result.current.setToken('soon.to.expire', soonToExpire)
+        useTokenStore.setState({
+          token: 'soon.to.expire',
+          expiresAt: soonToExpire,
+        })
       })
 
       // Default refresh window is 5 minutes
@@ -257,7 +276,7 @@ describe('useTokenStore', () => {
       const futureTime = Date.now() + 10 * 60 * 1000 // 10 minutes from now
 
       act(() => {
-        result.current.setToken('valid.token', futureTime)
+        useTokenStore.setState({ token: 'valid.token', expiresAt: futureTime })
       })
 
       expect(result.current.shouldRefresh()).toBe(false)
@@ -274,7 +293,10 @@ describe('useTokenStore', () => {
       const soonToExpire = Date.now() + 2 * 60 * 1000 // 2 minutes from now
 
       act(() => {
-        result.current.setToken('soon.to.expire', soonToExpire)
+        useTokenStore.setState({
+          token: 'soon.to.expire',
+          expiresAt: soonToExpire,
+        })
       })
 
       // With 1 minute refresh window
@@ -294,7 +316,7 @@ describe('useTokenStore', () => {
       const expiresAt = Date.now() + 3600000
 
       act(() => {
-        result1.current.setToken(token, expiresAt)
+        useTokenStore.setState({ token, expiresAt })
       })
 
       // Both hooks should see the same state
@@ -308,9 +330,12 @@ describe('useTokenStore', () => {
       const { result } = renderHook(() => useTokenStore())
 
       act(() => {
-        result.current.setLoading(true)
-        result.current.setToken('token1', Date.now() + 3600000)
-        result.current.setLoading(false)
+        useTokenStore.setState({ isLoading: true })
+        useTokenStore.setState({
+          token: 'token1',
+          expiresAt: Date.now() + 3600000,
+        })
+        useTokenStore.setState({ isLoading: false })
       })
 
       expect(result.current.isLoading).toBe(false)

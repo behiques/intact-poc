@@ -79,7 +79,7 @@ export const Header = () => {
                         ? ' border-primary-active-tab'
                         : 'text-primary-500 border-transparent '
                     }`}
-                    href={link.href}
+                    href={link.href as Parameters<typeof Link>[0]['href']}
                   >
                     {link.icon} <span>{link.label}</span>
                   </Link>
@@ -104,7 +104,7 @@ export const Header = () => {
                         ? ' border-primary-active-tab'
                         : 'text-primary-500 border-transparent '
                     }`}
-                    href={link.href}
+                    href={link.href as Parameters<typeof Link>[0]['href']}
                   >
                     {link.label}
                   </Link>
@@ -162,7 +162,9 @@ export const Header = () => {
           {pathname !== '/' && (
             <>
               <span className="text-gray-400">/</span>
-              <Link href={pathname}>{pathnameToTitle(pathname)}</Link>
+              <Link href={pathname as Parameters<typeof Link>[0]['href']}>
+                {pathnameToTitle(pathname)}
+              </Link>
             </>
           )}
         </nav>

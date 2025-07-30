@@ -5,7 +5,7 @@ import {
   useValidToken,
   useCurrentToken,
   useTokenStatus,
-} from './useToken'
+} from '@/features/common/hooks/useToken'
 
 // Mock the token store
 const mockTokenStore = {
@@ -22,13 +22,13 @@ const mockTokenStore = {
   timeUntilExpiry: vi.fn(),
 }
 
-vi.mock('../stores/useTokenStore', () => ({
+vi.mock('@/features/common/stores/useTokenStore', () => ({
   useTokenStore: () => mockTokenStore,
 }))
 
 // Mock session cleanup
 const mockCleanupFunction = vi.fn()
-vi.mock('../utils/tokenStorage', () => ({
+vi.mock('@/features/common/utils/tokenStorage', () => ({
   setupSessionCleanup: vi.fn(() => mockCleanupFunction),
 }))
 
@@ -62,9 +62,10 @@ describe('useToken hook', () => {
       expect(mockTokenStore.initialize).toHaveBeenCalledOnce()
     })
 
-    it('should set up session cleanup on mount', () => {
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      const { setupSessionCleanup } = require('../utils/tokenStorage')
+    it('should set up session cleanup on mount', async () => {
+      const { setupSessionCleanup } = await import(
+        '@/features/common/utils/tokenStorage'
+      )
 
       renderHook(() => useToken())
 
@@ -371,10 +372,14 @@ describe('useToken hook', () => {
       expect(() => renderHook(() => useToken())).toThrow('Store method failed')
     })
 
-    it('should handle cleanup function being null', () => {
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      const { setupSessionCleanup } = require('../utils/tokenStorage')
-      setupSessionCleanup.mockReturnValue(null)
+    it('should handle cleanup function being null', async () => {
+      const { setupSessionCleanup } = await import(
+        '@/features/common/utils/tokenStorage'
+      )
+      const mockSetup = setupSessionCleanup as typeof setupSessionCleanup & {
+        mockReturnValue: (value: unknown) => void
+      }
+      mockSetup.mockReturnValue(null)
 
       const { unmount } = renderHook(() => useToken())
 

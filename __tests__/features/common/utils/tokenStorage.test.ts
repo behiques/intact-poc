@@ -4,7 +4,7 @@ import {
   getStoredToken,
   clearStoredToken,
   hasValidStoredToken,
-} from './tokenStorage'
+} from '@/features/common/utils/tokenStorage'
 
 // Mock localStorage
 const mockLocalStorage = {
