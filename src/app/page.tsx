@@ -10,7 +10,13 @@ import {
 import { useFinancialCloseDates } from '@/features/dashboard/hooks/useFinancialCloseDate'
 import Link from 'next/link'
 
-const shortcuts = [
+interface Shortcut {
+  icon: React.ReactNode
+  href: string
+  label: string
+}
+
+const shortcuts: Shortcut[] = [
   { icon: <DashboardIcon />, href: '/', label: 'Dashboard' },
   { icon: <WorklistIcon />, href: '/my-worklist', label: 'My Worklist' },
   {
@@ -43,7 +49,7 @@ export default function Dashboard() {
               <Link
                 key={index}
                 className="text-primary border-primary w-full cursor-pointer rounded border bg-white px-4 py-3 text-left font-medium hover:bg-transparent"
-                href={link.href}
+                href={link.href as Parameters<typeof Link>[0]['href']}
               >
                 <span className="inline-flex items-center space-x-2">
                   {link.icon}
