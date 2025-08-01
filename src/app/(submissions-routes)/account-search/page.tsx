@@ -48,7 +48,17 @@ export default function AccountSearch() {
               Create new account
             </Link>
           </div>
-          <div className="mt-10 space-y-6 p-8">
+          <div className="mt-10 space-y-6 p-8 pt-0">
+            <div className="flex flex-col items-end justify-end">
+              <div>
+                <p>Search within results</p>
+                <input
+                  type="search"
+                  className="min-w-60 rounded border border-gray-300 p-2"
+                />
+              </div>
+            </div>
+
             <header className="flex items-center justify-between text-sm">
               <p>
                 Showing 1-10 of {results.length} results for &laquo;
