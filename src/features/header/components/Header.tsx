@@ -3,7 +3,6 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import Select from 'react-select'
 import {
   AlertsIcon,
   FeedbacksIcon,
@@ -16,8 +15,9 @@ import {
   SpecialtyLogo,
   ToolsIcon,
 } from '../assets/Icons'
-import { useBusinessUnits } from '../hooks/useBusinessUnits'
+import { useQuickLinks } from '../hooks/useQuickLinks'
 import { pathnameToTitle } from '@/utils/stringFormatter'
+import { SelectField, SelectOption } from '@/features/ui/Form/Select'
 
 const navLinks = [
   { href: '/', label: 'Dashboard' },
@@ -51,11 +51,11 @@ export const Header = () => {
     }
   }, [selectedLink])
 
-  const { items: businessUnits, isLoading } = useBusinessUnits()
-  const businessUnitOptions =
-    businessUnits?.map((bu) => ({
-      value: bu.url,
-      label: bu.name,
+  const { items: quickLinks, isLoading } = useQuickLinks()
+  const quickLinkOptions =
+    quickLinks?.map((link) => ({
+      value: link.url,
+      label: link.name,
     })) || []
 
   return (
@@ -115,7 +115,7 @@ export const Header = () => {
         </nav>
 
         <div className="mb-4 flex items-center">
-          <Select
+          <SelectField
             styles={{
               control: (baseStyles, state) => ({
                 ...baseStyles,
@@ -170,7 +170,7 @@ export const Header = () => {
         </nav>
         <div className="flex items-center space-x-2">
           <span className="font-semibold">Quick Links</span>
-          <Select
+          <SelectField
             styles={{
               control: (baseStyles, state) => ({
                 ...baseStyles,
@@ -183,8 +183,12 @@ export const Header = () => {
             }}
             className="w-64"
             placeholder=""
-            options={businessUnitOptions}
-            onChange={(option) => setSelectedLink(option?.value ?? '')}
+            options={quickLinkOptions}
+            onChange={(option) => {
+              if (option && typeof option === 'object' && 'value' in option) {
+                setSelectedLink((option as SelectOption).value)
+              }
+            }}
             isLoading={isLoading}
           />
         </div>

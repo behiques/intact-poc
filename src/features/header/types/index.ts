@@ -1,8 +1,8 @@
-export interface BusinessUnit {
+export interface QuickLink {
   name: string
   url: string
 }
 
-export interface BusinessUnitsApiResponse {
-  data: BusinessUnit[]
+export interface QuickLinksApiResponse {
+  data: QuickLink[]
 }
