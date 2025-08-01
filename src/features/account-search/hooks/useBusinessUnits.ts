@@ -1,4 +1,4 @@
-import { useBusinessUnitsQuery } from '../api/fetchBusinessUnit'
+import { useBusinessUnitsQuery } from '../api/fetchBusinessUnits'
 
 export const useBusinessUnits = () => {
   const { data, isLoading, error, refetch } = useBusinessUnitsQuery()
