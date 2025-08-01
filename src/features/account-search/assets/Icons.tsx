@@ -30,3 +30,55 @@ export const CollapseIcon = ({ className }: { className?: string }) => (
     />
   </svg>
 )
+
+export const ArrowRightIcon = ({ className }: { className?: string }) => (
+  <svg
+    className={className}
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 20 20"
+    height="20"
+    width="20"
+  >
+    <path
+      stroke-linejoin="round"
+      stroke-linecap="round"
+      stroke-width="2"
+      stroke="#007B87"
+      d="M4.16667 10H15.8333"
+    />
+    <path
+      stroke-linejoin="round"
+      stroke-linecap="round"
+      stroke-width="2"
+      stroke="#007B87"
+      d="M10 4.16666L15.8333 10L10 15.8333"
+    />
+  </svg>
+)
+
+export const ArrowLeftIcon = ({ className }: { className?: string }) => (
+  <svg
+    className={className}
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 20 20"
+    height="20"
+    width="20"
+  >
+    <path
+      stroke-linejoin="round"
+      stroke-linecap="round"
+      stroke-width="2"
+      stroke="#007B87"
+      d="M15.8333 10H4.16667"
+    />
+    <path
+      stroke-linejoin="round"
+      stroke-linecap="round"
+      stroke-width="2"
+      stroke="#007B87"
+      d="M10 15.8333L4.16667 10L10 4.16666"
+    />
+  </svg>
+)

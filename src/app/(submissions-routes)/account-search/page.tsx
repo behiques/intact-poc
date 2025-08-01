@@ -10,6 +10,10 @@ import {
 } from '@/features/account-search/types'
 import { useAccountSearch } from '@/features/account-search/hooks/useAccounts'
 import { LoaderSpinner } from '@/features/ui/LoaderSpinner'
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+} from '@/features/account-search/assets/Icons'
 
 export default function AccountSearch() {
   const [selectedAccount, setSelectedAccount] = useState<number[]>([])
@@ -18,7 +22,7 @@ export default function AccountSearch() {
   })
 
   const { items: results, isLoading } = useAccountSearch(searchForm)
-  console.log({ results })
+
   return (
     <div className="relative">
       {isLoading && (
@@ -45,10 +49,22 @@ export default function AccountSearch() {
             </Link>
           </div>
           <div className="mt-10 space-y-6 p-8">
-            <p className="text-sm">
-              Showing 1-10 of {results.length} results for &laquo;
-              {searchForm.accountName}&raquo;
-            </p>
+            <header className="flex items-center justify-between text-sm">
+              <p>
+                Showing 1-10 of {results.length} results for &laquo;
+                {searchForm.accountName}&raquo;
+              </p>
+              <Pagination />
+              <div>
+                <p className="font-semibold">Results per page:</p>
+                <select className="w-30 border-primary rounded border-2 bg-white px-4 py-2 text-sm">
+                  <option value="10">10</option>
+                  <option value="15">15</option>
+                  <option value="20">20</option>
+                  <option value="25">25</option>
+                </select>
+              </div>
+            </header>
             {results
               .filter((item) => !!item?.term.status)
               .slice(0, 10)
@@ -60,6 +76,10 @@ export default function AccountSearch() {
                   onClick={() => handleClick(item)}
                 />
               ))}
+
+            <footer className="flex items-center justify-center pt-6">
+              <Pagination />
+            </footer>
           </div>
         </>
       )}
@@ -73,4 +93,18 @@ export default function AccountSearch() {
         )
       : setSelectedAccount([...selectedAccount, item.account.id])
   }
+}
+
+const Pagination = () => {
+  return (
+    <div className="flex items-center space-x-2">
+      <button className="cursor-pointer">
+        <ArrowLeftIcon />
+      </button>
+      <span>Page 3 of 74</span>
+      <button className="cursor-pointer">
+        <ArrowRightIcon />
+      </button>
+    </div>
+  )
 }

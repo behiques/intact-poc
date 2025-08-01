@@ -182,7 +182,11 @@ export const Header = () => {
             className="w-64"
             placeholder=""
             options={quickLinkOptions}
-            onChange={(option: SelectOption) => setSelectedLink(option.value)}
+            onChange={(option) => {
+              if (option && typeof option === 'object' && 'value' in option) {
+                setSelectedLink((option as SelectOption).value)
+              }
+            }}
             isLoading={isLoading}
           />
         </div>
