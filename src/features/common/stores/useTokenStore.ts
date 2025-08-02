@@ -1,4 +1,4 @@
-import create from 'zustand'
+import { create } from 'zustand'
 import type { StateCreator } from 'zustand/vanilla'
 import { subscribeWithSelector } from 'zustand/middleware'
 import type { AuthError } from '../types'
