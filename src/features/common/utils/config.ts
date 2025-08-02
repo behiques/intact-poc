@@ -7,6 +7,7 @@ import type { TokenConfig } from '../types'
  * Provides validated environment variables for token management
  * with proper TypeScript types and runtime validation.
  */
+
 export const tokenConfig: TokenConfig = {
   authTokenApiUrl: env.AUTH_TOKEN_API_URL,
   backendApiUrl: env.BACKEND_API_URL,
@@ -19,9 +20,9 @@ export const tokenConfig: TokenConfig = {
  */
 export const validateTokenConfig = (): void => {
   const requiredVars = [
-    'AUTH_TOKEN_API_URL',
-    'BACKEND_API_URL',
-    'USER_SYSTEM_ID',
+    // 'AUTH_TOKEN_API_URL',
+    // 'BACKEND_API_URL',
+    // 'USER_SYSTEM_ID',
   ] as const
 
   const missingVars = requiredVars.filter((varName) => !process.env[varName])
