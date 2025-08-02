@@ -41,16 +41,16 @@ export const ArrowRightIcon = ({ className }: { className?: string }) => (
     width="20"
   >
     <path
-      stroke-linejoin="round"
-      stroke-linecap="round"
-      stroke-width="2"
+      strokeLinejoin="round"
+      strokeLinecap="round"
+      strokeWidth="2"
       stroke="#007B87"
       d="M4.16667 10H15.8333"
     />
     <path
-      stroke-linejoin="round"
-      stroke-linecap="round"
-      stroke-width="2"
+      strokeLinejoin="round"
+      strokeLinecap="round"
+      strokeWidth="2"
       stroke="#007B87"
       d="M10 4.16666L15.8333 10L10 15.8333"
     />
@@ -67,16 +67,16 @@ export const ArrowLeftIcon = ({ className }: { className?: string }) => (
     width="20"
   >
     <path
-      stroke-linejoin="round"
-      stroke-linecap="round"
-      stroke-width="2"
+      strokeLinejoin="round"
+      strokeLinecap="round"
+      strokeWidth="2"
       stroke="#007B87"
       d="M15.8333 10H4.16667"
     />
     <path
-      stroke-linejoin="round"
-      stroke-linecap="round"
-      stroke-width="2"
+      strokeLinejoin="round"
+      strokeLinecap="round"
+      strokeWidth="2"
       stroke="#007B87"
       d="M10 15.8333L4.16667 10L10 4.16666"
     />

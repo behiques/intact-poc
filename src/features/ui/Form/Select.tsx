@@ -27,6 +27,19 @@ export const SelectField: React.FC<SelectProps> = ({
   <ReactSelect
     className={isInvalid ? 'error-picker-class' : ''}
     isClearable={isClearable}
+    styles={{
+      control: (baseStyles, state) => ({
+        ...baseStyles,
+        marginTop: 3,
+        paddingTop: 3,
+        paddingBottom: 3,
+        borderColor: state.isFocused ? '#007b87' : '#007b87',
+      }),
+      dropdownIndicator: (baseStyles) => ({
+        ...baseStyles,
+        color: '#007b87',
+      }),
+    }}
     {...props}
   />
 )

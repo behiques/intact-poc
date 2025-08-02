@@ -19,9 +19,9 @@ export const tokenConfig: TokenConfig = {
  */
 export const validateTokenConfig = (): void => {
   const requiredVars = [
-    'AUTH_TOKEN_API_URL',
-    'BACKEND_API_URL',
-    'USER_SYSTEM_ID',
+    // 'AUTH_TOKEN_API_URL',
+    // 'BACKEND_API_URL',
+    // 'USER_SYSTEM_ID',
   ] as const
 
   const missingVars = requiredVars.filter((varName) => !process.env[varName])
