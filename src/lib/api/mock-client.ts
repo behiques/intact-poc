@@ -79,8 +79,13 @@ export class MockApiClient implements ApiClient {
       return getMockAccountsForSearch(params) as T
     }
 
-    if (endpoint === '/businessUnits' && method === 'GET') {
-      return getMockBusinessUnits() as T
+    // Business Units endpoints - support both legacy and new backend paths
+    if (
+      (endpoint === '/businessUnits' ||
+        endpoint === '/common-api/api/v1/common/businessunits') &&
+      method === 'GET'
+    ) {
+      return getMockBusinessUnits(params) as T
     }
 
     if (endpoint === '/producers' && method === 'GET') {
