@@ -73,14 +73,26 @@ type Address = {
 }
 
 export type Term = {
+  address: {
+    street: string | null
+    city: string | null
+    state: string | null
+    zip: string | null
+    country: string | null
+  }
+  businessUnitId: string
   businessUnitName: string
-  programType: string
   effectiveDate: string
   expirationDate: string
-  status: string
   producerCode: string
   producerName: string
+  programType: string
+  territory: string | null
+  status: string
   underwriter: string
+  schedule: string
+  cyberCovExists: boolean
+  eandOCovExists: boolean
 }
 
 export type AccountSearchFormProps = {

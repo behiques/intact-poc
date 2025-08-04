@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react'
 import { useToken } from '@/features/common/hooks/useToken'
 import { useTokenStore } from '@/features/common/stores/useTokenStore'
 import type { AuthError } from '@/features/common/types'
+import { AxiosError } from 'axios'
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(
@@ -15,13 +16,21 @@ export function Providers({ children }: { children: React.ReactNode }) {
           queries: {
             staleTime: 60 * 1000, // 1 minute
             gcTime: 5 * 60 * 1000, // 5 minutes
-            retry: (failureCount, error: Error | AuthError) => {
-              // Don't retry on authentication errors
+            retry: (failureCount, error: Error | AuthError | AxiosError) => {
+              // Don't retry on authentication errors (custom AuthError format)
               if ('type' in error && error.type === 'AUTH_FAILED') {
                 return false
               }
+              // Don't retry on 401 status (generic status check)
               if ('status' in error && error.status === 401) {
                 return false
+              }
+              // Don't retry on axios 401 errors
+              if (error instanceof Error && 'response' in error) {
+                const axiosError = error as AxiosError
+                if (axiosError.response?.status === 401) {
+                  return false
+                }
               }
               // Default retry logic for other errors
               return failureCount < 2
@@ -29,13 +38,21 @@ export function Providers({ children }: { children: React.ReactNode }) {
             refetchOnWindowFocus: false,
           },
           mutations: {
-            retry: (failureCount, error: Error | AuthError) => {
-              // Don't retry mutations on authentication errors
+            retry: (failureCount, error: Error | AuthError | AxiosError) => {
+              // Don't retry mutations on authentication errors (custom AuthError format)
               if ('type' in error && error.type === 'AUTH_FAILED') {
                 return false
               }
+              // Don't retry on 401 status (generic status check)
               if ('status' in error && error.status === 401) {
                 return false
+              }
+              // Don't retry on axios 401 errors
+              if (error instanceof Error && 'response' in error) {
+                const axiosError = error as AxiosError
+                if (axiosError.response?.status === 401) {
+                  return false
+                }
               }
               // Default retry logic for other errors
               return failureCount < 1

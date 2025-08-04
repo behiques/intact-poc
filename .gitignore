@@ -147,4 +147,8 @@ tmp/
 temp/
 
 # Agent Tasks
-.tasks
+.tasks/
+
+#Claude
+CLAUDE.local.md
+.claude/

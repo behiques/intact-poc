@@ -1,20 +1,17 @@
 import { useQuery } from '@tanstack/react-query'
 import { ProducerApiResponse } from '../types'
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'
+import { apiClient } from '@/lib/api'
 
 // REST API call - bulletproof pattern keeps API logic in feature/api folder
 export const fetchProducers = async (
   businessUnitId: string
 ): Promise<ProducerApiResponse> => {
-  const response = await fetch(
-    `${API_BASE_URL}/api/producers?businessUnitId=${businessUnitId}`
-  )
+  // Direct call to backend API (or mock based on environment)
+  const response = await apiClient.get<ProducerApiResponse>('/producers', {
+    params: { businessUnitId },
+  })
 
-  if (!response.ok)
-    throw new Error(`Failed to fetch producers: ${response.statusText}`)
-
-  return response.json()
+  return response.data
 }
 
 // React Query hooks for data fetching

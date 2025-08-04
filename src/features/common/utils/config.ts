@@ -18,13 +18,11 @@ export const tokenConfig: TokenConfig = {
  * @throws Error if any required environment variables are missing
  */
 export const validateTokenConfig = (): void => {
-  const requiredVars = [
-    'AUTH_TOKEN_API_URL',
-    'BACKEND_API_URL',
-    'USER_SYSTEM_ID',
-  ] as const
+  const missingVars: string[] = []
 
-  const missingVars = requiredVars.filter((varName) => !process.env[varName])
+  if (!tokenConfig.authTokenApiUrl) missingVars.push('AUTH_TOKEN_API_URL')
+  if (!tokenConfig.backendApiUrl) missingVars.push('BACKEND_API_URL')
+  if (!tokenConfig.userSystemId) missingVars.push('USER_SYSTEM_ID')
 
   if (missingVars.length > 0) {
     throw new Error(
