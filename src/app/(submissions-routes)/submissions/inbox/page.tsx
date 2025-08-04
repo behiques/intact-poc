@@ -7,11 +7,6 @@ import { CustomTable } from '@/features/ui/Table'
 import type { Worklist } from '@/features/submissions/types'
 import { useSubmissions } from '@/features/submissions/hooks/useSubmissions'
 import { PageHeader } from '@/features/submissions/components/PageHeader'
-import { EditPenIcon } from '@/features/ui/Icons/EditPenIcon'
-import Image from 'next/image'
-
-import commentIcon from '@/features/submissions/assets/comment.png'
-import commentFilledIcon from '@/features/submissions/assets/comment-filled.png'
 
 export default function SubmissionsWorklistPage() {
   const columns = React.useMemo<ColumnDef<Worklist>[]>(
