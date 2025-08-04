@@ -1,5 +1,5 @@
 import type {
-  ApiClient,
+  ApiClientInterface,
   ApiClientConfig,
   ApiRequestOptions,
   ApiResponse,
@@ -8,10 +8,10 @@ import type {
 import { env } from '@/utils/env'
 
 /**
- * Real API Client for production use
+ * API Client for production use
  * Makes actual HTTP requests to the backend API
  */
-export class RealApiClient implements ApiClient {
+export class ApiClient implements ApiClientInterface {
   private config: Required<ApiClientConfig>
 
   constructor(config: ApiClientConfig) {

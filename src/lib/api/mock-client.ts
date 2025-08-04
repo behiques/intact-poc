@@ -1,4 +1,8 @@
-import type { ApiClient, ApiRequestOptions, ApiResponse } from './types'
+import type {
+  ApiClientInterface,
+  ApiRequestOptions,
+  ApiResponse,
+} from './types'
 import {
   getMockAccountsForSearch,
   getMockBusinessUnits,
@@ -12,7 +16,7 @@ import {
  * Mock API Client for development and testing
  * Simulates API responses without making actual network requests
  */
-export class MockApiClient implements ApiClient {
+export class MockApiClient implements ApiClientInterface {
   private delay: number
 
   constructor(options: { delay?: number } = {}) {

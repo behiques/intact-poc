@@ -49,7 +49,7 @@ const response = await apiClient.get('/accounts', {
 - `index.ts` - Main entry point with environment detection
 - `types.ts` - TypeScript interfaces for API client
 - `mock-client.ts` - Mock API implementation
-- `real-client.ts` - Real API implementation with fetch
+- `api-client.ts` - Real API implementation with fetch
 
 ### Token Providers (`/src/lib/auth/`)
 
