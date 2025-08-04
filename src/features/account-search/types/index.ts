@@ -85,18 +85,67 @@ export interface PolicyContactApiResponse {
 
 export interface Producer {
   producerCode: string
+  businessUnitId: string
   name: string
+  phone: string
+  isActive: boolean
   address1: string
+  address2: string
   city: string
   stateCode: string
-  zip?: string
-  territoryId?: string
-  territoryName?: string
+  zip: string
+  countryCode: string | null
+  mailAddress1: string
+  mailAddress2: string
+  mailCity: string
+  mailStateCode: string
+  mailZip: string
+  mailCountryCode: string | null
+  billAddress1: string
+  billAddress2: string
+  billCity: string
+  billStateCode: string
+  billZip: string
+  billCountryCode: string | null
+  territoryId: string
+  territoryDescription: string
+  territoryName: string
 }
 
-export interface ProducerApiResponse {
-  data: Producer[]
+/**
+ * Query parameters for Producers API
+ * All parameters are optional to allow flexible querying
+ */
+export interface ProducersQueryParams {
+  /** Filter to a specific territory by ID (e.g., "001") */
+  TerritoryId?: string
+  /** Comma-separated list of fields to return (e.g., "producerCode,name,isActive") */
+  Fields?: string
+  /** Whether to include inactive producers. Defaults to false (active only) */
+  ReturnAll?: boolean
 }
+
+export type ProducerApiResponse = Producer[]
+
+/**
+ * Zod schema for validating Producers query parameters
+ */
+export const ProducersQueryParamsSchema = z
+  .object({
+    TerritoryId: z.string().min(1, 'TerritoryId cannot be empty').optional(),
+    Fields: z
+      .string()
+      .min(1, 'Fields cannot be empty')
+      .regex(
+        /^[a-zA-Z]+(,[a-zA-Z]+)*$/,
+        'Fields must be comma-separated field names'
+      )
+      .optional(),
+    ReturnAll: z
+      .union([z.boolean(), z.string().transform((val) => val === 'true')])
+      .optional(),
+  })
+  .strict()
 
 export type AccountSearchResultProp = {
   item: AccountSearchResult
