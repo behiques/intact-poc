@@ -19,7 +19,10 @@ export interface TableProps<T extends object> {
   columns: ColumnDef<T>[]
 }
 
-export const CustomTable = <T extends object>({ data = [], columns = [] }) => {
+export const CustomTable = <T extends object>({
+  data = [],
+  columns = [],
+}: TableProps<T>) => {
   const [pagination, setPagination] = React.useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,

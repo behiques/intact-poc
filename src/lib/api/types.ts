@@ -47,7 +47,7 @@ export interface TokenProvider {
 /**
  * API Client Interface
  */
-export interface ApiClient {
+export interface ApiClientInterface {
   request<T = unknown>(
     endpoint: string,
     options?: ApiRequestOptions
