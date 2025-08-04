@@ -76,8 +76,8 @@ export const Header = () => {
                   <Link
                     className={`text-primary flex items-center space-x-1 border-b-[6px] py-2 text-xs ${
                       isActive(link.href)
-                        ? ' border-primary-active-tab'
-                        : 'text-primary-500 border-transparent '
+                        ? 'border-primary-active-tab'
+                        : 'text-primary-500 border-transparent'
                     }`}
                     href={link.href as Parameters<typeof Link>[0]['href']}
                   >
@@ -101,8 +101,8 @@ export const Header = () => {
                   <Link
                     className={`text-primary block space-x-4 border-b-[6px] py-2 text-base font-semibold ${
                       isActive(link.href)
-                        ? ' border-primary-active-tab'
-                        : 'text-primary-500 border-transparent '
+                        ? 'border-primary-active-tab'
+                        : 'text-primary-500 border-transparent'
                     }`}
                     href={link.href as Parameters<typeof Link>[0]['href']}
                   >
@@ -142,7 +142,7 @@ export const Header = () => {
               { value: 'option3', label: 'Transaction' },
             ]}
           />
-          <div className="rouunded-md flex w-full ">
+          <div className="rouunded-md flex w-full">
             <input
               type="text"
               className="focus:border-primary w-full rounded-none border border-gray-300 p-2 focus:outline-none"
