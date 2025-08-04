@@ -7,6 +7,12 @@ const envSchema = z.object({
     .default('development'),
   NEXT_PUBLIC_API_URL: z.string().url().optional(),
   NEXT_PUBLIC_APP_URL: z.string().url().optional(),
+  // Mock API Configuration
+  NEXT_PUBLIC_USE_MOCK_API: z
+    .string()
+    .transform((val) => val === 'true')
+    .default('false')
+    .optional(),
   // Token Management Configuration
   AUTH_TOKEN_API_URL: z.string().url('AUTH_TOKEN_API_URL must be a valid URL'),
   BACKEND_API_URL: z.string().url('BACKEND_API_URL must be a valid URL'),

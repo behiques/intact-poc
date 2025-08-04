@@ -97,11 +97,11 @@ export default function AccountSearch() {
   )
 
   function handleClick(item: AccountSearchResult) {
-    selectedAccount.includes(item.account.id)
-      ? setSelectedAccount(
-          selectedAccount.filter((id) => id !== item.account.id)
-        )
-      : setSelectedAccount([...selectedAccount, item.account.id])
+    if (selectedAccount.includes(item.account.id)) {
+      setSelectedAccount(selectedAccount.filter((id) => id !== item.account.id))
+    } else {
+      setSelectedAccount([...selectedAccount, item.account.id])
+    }
   }
 }
 

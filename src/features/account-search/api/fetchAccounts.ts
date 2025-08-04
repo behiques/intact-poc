@@ -1,24 +1,21 @@
 import { useQuery } from '@tanstack/react-query'
 import { AccountSearchApiResponse, AccountSearchFormData } from '../types'
 import { removeBlankAttributes } from '@/utils/objectFormatter'
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'
+import { apiClient } from '@/lib/api'
 
 // REST API call - bulletproof pattern keeps API logic in feature/api folder
 export const fetchAccounts = async (
   searchParams: AccountSearchFormData
 ): Promise<AccountSearchApiResponse> => {
-  const url = new URL(`${API_BASE_URL}/api/accounts`)
-  url.search = new URLSearchParams(
-    removeBlankAttributes(searchParams)
-  ).toString()
+  // Clean search params
+  const cleanParams = removeBlankAttributes(searchParams)
 
-  const response = await fetch(url)
+  // Direct call to backend API (or mock based on environment)
+  const response = await apiClient.get<AccountSearchApiResponse>('/accounts', {
+    params: cleanParams,
+  })
 
-  if (!response.ok)
-    throw new Error(`Failed to fetch accounts: ${response.statusText}`)
-
-  return response.json()
+  return response.data
 }
 
 // React Query hooks for data fetching

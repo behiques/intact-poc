@@ -1,17 +1,15 @@
 import { useQuery } from '@tanstack/react-query'
 import { BusinessUnitApiResponse } from '../types'
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'
+import { apiClient } from '@/lib/api'
 
 // REST API call - bulletproof pattern keeps API logic in feature/api folder
 export const fetchBusinessUnits =
   async (): Promise<BusinessUnitApiResponse> => {
-    const response = await fetch(`${API_BASE_URL}/api/businessUnits`)
+    // Direct call to backend API (or mock based on environment)
+    const response =
+      await apiClient.get<BusinessUnitApiResponse>('/businessUnits')
 
-    if (!response.ok)
-      throw new Error(`Failed to fetch business units: ${response.statusText}`)
-
-    return response.json()
+    return response.data
   }
 
 // React Query hooks for data fetching
