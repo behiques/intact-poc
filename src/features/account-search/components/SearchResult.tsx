@@ -1,5 +1,8 @@
+import Image from 'next/image'
 import { CollapseIcon, ExpandIcon } from '../assets/Icons'
 import { AccountSearchResultProp } from '../types'
+import active from '../assets/active-account.png'
+import inactive from '../assets/inactive-account.png'
 
 export const SearchResult = ({
   item,
@@ -8,14 +11,23 @@ export const SearchResult = ({
 }: AccountSearchResultProp) => {
   return (
     <div
-      className="relative cursor-pointer border-2 border-gray-300 bg-white text-sm shadow-sm"
+      className="border-primary-light relative cursor-pointer border-2 bg-white text-sm shadow-sm"
       onClick={onClick}
     >
       <div className="float-end">
         {!showing ? <ExpandIcon /> : <CollapseIcon />}
       </div>
-      <div className=" p-4">
-        <p className="font-bold text-teal-700">
+      <span className="absolute p-4">
+        <Image
+          src={item.account.status === 'active' ? active : inactive}
+          alt={item.account.status}
+          title={item.account.status}
+          width={24}
+          height={27}
+        />
+      </span>
+      <div className="p-4 pl-12">
+        <p className="text-primary font-bold">
           {item.account.name} - {item.account.businessUnitName}
         </p>
         <p className="text-gray-700">
