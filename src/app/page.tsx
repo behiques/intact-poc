@@ -27,7 +27,7 @@ const shortcuts: Shortcut[] = [
   },
   {
     icon: <SubmissionWorklistIcon />,
-    href: '/submissions?tab=worklist',
+    href: '/submissions/worklist',
     label: 'Submissions Worklist',
   },
   {

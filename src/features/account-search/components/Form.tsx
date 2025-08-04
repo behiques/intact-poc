@@ -71,52 +71,57 @@ export const AccountSearchForm = ({ onSearch }: AccountSearchFormProps) => {
       <form onSubmit={onSubmit} className="mx-auto p-6">
         <h2 className="mb-4 text-xl font-bold">Who is the submission for?</h2>
 
-        <div className="mb-4">
-          <label className="block text-sm font-bold">Account Name</label>
-          <input
-            {...register('accountName', {
-              required: { value: true, message: 'Account Name is required' },
-              minLength: { value: 4, message: 'Minimum 4 characters required' },
-            })}
-            placeholder="Minimum 4 characters"
-            autoFocus
-            className="mt-1 w-full rounded border bg-white px-3 py-2"
-          />
-          {errors.accountName && (
-            <span className="text-sm text-red-500">
-              Minimum 4 characters required
-            </span>
-          )}
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-sm font-bold">For Business Unit</label>
-          <Controller
-            control={control}
-            defaultValue={'I'}
-            name="businessUnit"
-            render={({ field: { onChange, value } }) => (
-              <SelectField
-                value={businessUnitsOptions.find(
-                  (option: SelectOption) => option.value === value
-                )}
-                onChange={(newValue) => {
-                  if (
-                    newValue &&
-                    typeof newValue === 'object' &&
-                    'value' in newValue
-                  ) {
-                    onChange((newValue as SelectOption).value)
-                  } else {
-                    onChange('')
-                  }
-                }}
-                options={businessUnitsOptions}
-                isClearable={false}
-                isLoading={!businessUnitsOptions.length}
-              />
+        <div className="grid grid-cols-12 gap-6">
+          <div className="col-span-7 mb-4">
+            <label className="block text-sm font-bold">Account Name</label>
+            <input
+              {...register('accountName', {
+                required: { value: true, message: 'Account Name is required' },
+                minLength: {
+                  value: 4,
+                  message: 'Minimum 4 characters required',
+                },
+              })}
+              placeholder="Minimum 4 characters"
+              autoFocus
+              className="mt-1 w-full rounded border bg-white px-3 py-2"
+            />
+            {errors.accountName && (
+              <span className="text-sm text-red-500">
+                {errors.accountName.message}
+              </span>
             )}
-          />
+          </div>
+
+          <div className="col-span-5 mb-4">
+            <label className="block text-sm font-bold">For Business Unit</label>
+            <Controller
+              control={control}
+              defaultValue={'I'}
+              name="businessUnit"
+              render={({ field: { onChange, value } }) => (
+                <SelectField
+                  value={businessUnitsOptions.find(
+                    (option: SelectOption) => option.value === value
+                  )}
+                  onChange={(newValue) => {
+                    if (
+                      newValue &&
+                      typeof newValue === 'object' &&
+                      'value' in newValue
+                    ) {
+                      onChange((newValue as SelectOption).value)
+                    } else {
+                      onChange('')
+                    }
+                  }}
+                  options={businessUnitsOptions}
+                  isClearable={false}
+                  isLoading={!businessUnitsOptions.length}
+                />
+              )}
+            />
+          </div>
         </div>
 
         <div className="mb-4">
@@ -164,59 +169,60 @@ export const AccountSearchForm = ({ onSearch }: AccountSearchFormProps) => {
             />
           </div>
         </div>
-
-        <div className="mb-4">
-          <label className="block text-sm font-bold">Policy Contact</label>
-          <Controller
-            control={control}
-            name="policyContact"
-            render={({ field: { onChange, value } }) => (
-              <SelectField
-                className="mr-2 w-full"
-                value={policyContactsOptions.find(
-                  (option: SelectOption) => option.value === value
-                )}
-                onChange={(newValue) => {
-                  if (
-                    newValue &&
-                    typeof newValue === 'object' &&
-                    'value' in newValue
-                  ) {
-                    onChange((newValue as SelectOption).value)
-                  } else {
-                    onChange('')
-                  }
-                }}
-                options={policyContactsOptions}
-                isClearable={false}
-                isLoading={!policyContactsOptions.length}
-                isDisabled={!policyContactsOptions.length}
-              />
-            )}
-          />
-        </div>
-
-        <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div>
-            <label className="block text-sm font-bold">
-              Proposed effective date
-            </label>
-            <input
-              type="date"
-              {...register('effectiveDate', { required: false })}
-              className="mt-1 w-full rounded border bg-white px-3 py-2"
+        <div className="grid grid-cols-12 gap-6">
+          <div className="col-span-5 mb-4">
+            <label className="block text-sm font-bold">Policy Contact</label>
+            <Controller
+              control={control}
+              name="policyContact"
+              render={({ field: { onChange, value } }) => (
+                <SelectField
+                  className="mr-2 w-full"
+                  value={policyContactsOptions.find(
+                    (option: SelectOption) => option.value === value
+                  )}
+                  onChange={(newValue) => {
+                    if (
+                      newValue &&
+                      typeof newValue === 'object' &&
+                      'value' in newValue
+                    ) {
+                      onChange((newValue as SelectOption).value)
+                    } else {
+                      onChange('')
+                    }
+                  }}
+                  options={policyContactsOptions}
+                  isClearable={false}
+                  isLoading={!policyContactsOptions.length}
+                  isDisabled={!policyContactsOptions.length}
+                />
+              )}
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-bold">
-              Proposed expiration date
-            </label>
-            <input
-              type="date"
-              {...register('expirationDate', { required: false })}
-              className="mt-1 w-full rounded border bg-white px-3 py-2"
-            />
+          <div className="col-span-7 mb-4 grid gap-4 md:grid-cols-2">
+            <div>
+              <label className="block text-sm font-bold">
+                Proposed effective date
+              </label>
+              <input
+                type="date"
+                {...register('effectiveDate', { required: false })}
+                className="mt-1 w-full rounded border bg-white px-3 py-2"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-bold">
+                Proposed expiration date
+              </label>
+              <input
+                type="date"
+                {...register('expirationDate', { required: false })}
+                className="mt-1 w-full rounded border bg-white px-3 py-2"
+              />
+            </div>
           </div>
         </div>
 
