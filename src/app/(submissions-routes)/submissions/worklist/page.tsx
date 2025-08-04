@@ -1,73 +1,125 @@
-import { SearchIcon } from '@/features/header/assets/Icons'
-import { RefreshIcon } from '@/features/worklist/assets/Icons'
-import Link from 'next/dist/client/link'
+'use client'
 
-export default function SubmissionsPage() {
+import React from 'react'
+import { ColumnDef } from '@tanstack/react-table'
+
+import { CustomTable } from '@/features/ui/Table'
+import type { Worklist } from '@/features/submissions/types'
+import { useSubmissions } from '@/features/submissions/hooks/useSubmissions'
+import { PageHeader } from '@/features/submissions/components/PageHeader'
+import { EditPenIcon } from '@/features/ui/Icons/EditPenIcon'
+import Image from 'next/image'
+
+import commentIcon from '@/features/submissions/assets/comment.png'
+import commentFilledIcon from '@/features/submissions/assets/comment-filled.png'
+
+export default function SubmissionsWorklistPage() {
+  const columns = React.useMemo<ColumnDef<Worklist>[]>(
+    () => [
+      {
+        accessorFn: (row) => row.EmailDetails?.from,
+        id: 'EmailDetails.from',
+        cell: (info) => info.getValue(),
+        header: () => <span>From</span>,
+      },
+      {
+        accessorFn: (row) => row.EmailDetails?.subject,
+        id: 'EmailDetails.subject',
+        cell: (info) => info.getValue(),
+        header: () => <span>Subject</span>,
+        footer: (props) => props.column.id,
+      },
+      {
+        accessorFn: (row) => row.CreatedDate,
+        id: 'CreatedDate',
+        cell: (info) =>
+          new Date(info.getValue() as string).toLocaleDateString(),
+        header: () => 'Date',
+        footer: (props) => props.column.id,
+      },
+      {
+        accessorFn: (row) => row.EmailDetails?.source,
+        id: 'EmailDetails.source',
+        cell: (info) => info.getValue(),
+        header: () => <span>Source</span>,
+        footer: (props) => props.column.id,
+      },
+      {
+        accessorFn: (row) => row.SubmissionStatusDescription,
+        id: 'SubmissionStatusDescription',
+        cell: (info) => info.getValue(),
+        header: 'Status',
+        footer: (props) => props.column.id,
+      },
+      {
+        accessorFn: (row) => row.AssignedToName,
+        id: 'AssignedToName',
+        cell: (info) => info.getValue(),
+        header: 'Assigned To',
+        footer: (props) => props.column.id,
+      },
+      {
+        accessorFn: (row) => row.SubmissionId,
+        id: 'SubmissionId',
+        cell: (info) => info.getValue(),
+        header: 'ID',
+        footer: (props) => props.column.id,
+      },
+      {
+        accessorKey: 'comments',
+        cell: (info) => (
+          <button className="cursor-pointer">
+            <Image
+              src={info.getValue() ? commentFilledIcon : commentIcon}
+              alt="Edit"
+              width={21}
+              height={19}
+            />
+          </button>
+        ),
+        header: 'Comments',
+        footer: (props) => props.column.id,
+      },
+      {
+        accessorKey: 'edit',
+        cell: () => (
+          <button className="cursor-pointer">
+            <EditPenIcon />
+          </button>
+        ),
+        header: 'Edit',
+        footer: (props) => props.column.id,
+      },
+      {
+        accessorKey: 'actions',
+        cell: () => (
+          <button className="hover:bg-primary-light inline-block cursor-pointer rounded-sm px-3 py-1">
+            ...
+          </button>
+        ),
+        header: 'Actions',
+        footer: (props) => props.column.id,
+      },
+    ],
+    []
+  )
+
+  useSubmissions('worklist')
+  const { items: submissions } = useSubmissions('worklist') // Fetch submissions for worklist
+
   return (
-    <>
+    <div className="p-6">
       <div className="">
-        <nav className="-mb-0.5">
-          <ul className="flex">
-            <li>
-              <Link
-                href="/submissions/inbox"
-                className="bg-white hover:bg-primary-lightest border border-gray-300 p-2 w-60 block font-bold text-center"
-              >
-                Inbox
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/submissions/worklist"
-                className="bg-primary-lightest text-primary border border-gray-300 border-b-2 border-b-primary p-2 w-60 block font-bold text-center"
-              >
-                Worklist
-              </Link>
-            </li>
-          </ul>
-        </nav>
-        <header className="bg-white p-6 border border-gray-300">
-          <h1 className="font-bold text-2xl">Worklist</h1>
-
-          <div className="mt-4 flex items-center justify-between">
-            <div>
-              <label
-                htmlFor="search"
-                className="block text-sm/6 font-medium text-gray-900"
-              >
-                <div className="flex">
-                  <div className="grow h-12">
-                    <input
-                      id="search"
-                      name="search"
-                      type="search"
-                      placeholder="Search"
-                      className="border border-gray-300 rounded-sm block w-full h-12 pr-3 pl-10"
-                    />
-                    <SearchIcon className="fill-gray-300 w-10" />
-                  </div>
-                  <button
-                    type="button"
-                    className="h-12 rounded-sm -ml-2 bg-primary px-5 py-0 text-sm font-bold text-white"
-                  >
-                    Search
-                  </button>
-                </div>
-              </label>
-            </div>
-            <button
-              type="button"
-              className="h-12 rounded-sm bg-transparent hover:bg-primary-lightest px-6 py-0 text-sm font-bold text-primary cursor-pointer"
-            >
-              <RefreshIcon className="inline-block mr-2" />
-              Refresh
-            </button>
-          </div>
-        </header>
-        <section className="border border-gray-300 p-6 -mt-px">
-          <p>No submissions found.</p>
+        <PageHeader title="Worklist" />
+        <section className="-mt-px">
+          <CustomTable
+            {...{
+              data: submissions || [],
+              columns,
+            }}
+          />
         </section>
       </div>
-    </>
+    </div>
   )
 }

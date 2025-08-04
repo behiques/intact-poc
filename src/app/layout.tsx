@@ -23,7 +23,7 @@ export default function RootLayout({
         <body className={inter.className}>
           <div id="root">
             <Header />
-            <main className="p-6">{children}</main>
+            <main>{children}</main>
           </div>
         </body>
       </html>
