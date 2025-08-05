@@ -117,11 +117,13 @@ pnpm format
 This project uses Tailwind CSS with proper tooling support:
 
 ### VS Code Configuration
+
 - **CSS validation disabled** for built-in CSS language server
 - **Tailwind CSS IntelliSense** enabled with custom data
 - **Custom CSS directives** recognized (`@tailwind`, `@apply`, `@layer`)
 
 ### Stylelint
+
 - **CSS linting** with Tailwind-aware rules
 - **Auto-fixing** available with `pnpm lint:css:fix`
 - **Pre-commit hooks** ensure code quality
@@ -137,11 +139,13 @@ pnpm storybook
 ```
 
 Stories are automatically loaded from:
+
 - `src/features/**/components/**/*.stories.@(js|jsx|ts|tsx|mdx)`
 
 ## 🧪 Testing
 
 The project uses Vitest for testing with:
+
 - **Unit tests** for hooks and utilities
 - **Component tests** with Testing Library
 - **Mocking** for external dependencies
@@ -238,6 +242,7 @@ describe('AwesomeCard', () => {
 ## 📝 Best Practices
 
 ### 1. Import Strategy
+
 ```typescript
 // ✅ Good - Direct imports
 import { AwesomeCard } from '@/features/awesome-feature/components/AwesomeCard'
@@ -247,6 +252,7 @@ import { AwesomeCard } from '@/features/awesome-feature'
 ```
 
 ### 2. State Management
+
 ```typescript
 // ✅ Good - Feature-scoped state
 const useAwesomeStore = create<AwesomeStore>((set) => ({
@@ -257,6 +263,7 @@ const useAwesomeStore = create<AwesomeStore>((set) => ({
 ```
 
 ### 3. API Layer
+
 ```typescript
 // ✅ Good - Combined API + hooks
 export const useAwesomeQuery = () => {
@@ -272,12 +279,14 @@ export const useAwesomeQuery = () => {
 ## 🚀 Deployment
 
 The project is ready for deployment on platforms like:
+
 - **Vercel** (recommended for Next.js)
 - **Netlify**
 - **AWS**
 - **Docker**
 
 Build the project:
+
 ```bash
 npm run build
 ```

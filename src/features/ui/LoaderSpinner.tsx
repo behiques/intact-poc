@@ -1,6 +1,6 @@
 export const LoaderSpinner = () => (
   <svg
-    className="text-primary -ml-1 mr-3 size-20 animate-spin"
+    className="text-primary mr-3 -ml-1 size-20 animate-spin"
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"

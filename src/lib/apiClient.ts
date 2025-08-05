@@ -1,6 +1,24 @@
+import axios, {
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse,
+  AxiosError,
+  InternalAxiosRequestConfig,
+  CancelTokenSource,
+  isAxiosError,
+} from 'axios'
 import { env } from '@/utils/env'
 import { useTokenStore } from '@/features/common/stores/useTokenStore'
 import type { AuthError } from '@/features/common/types'
+
+// Extend axios request config to include our custom properties
+declare module 'axios' {
+  interface InternalAxiosRequestConfig {
+    skipAuth?: boolean
+    retryOn401?: boolean
+    'X-Request-Timestamp'?: string
+  }
+}
 
 /**
  * API Client Configuration
@@ -17,15 +35,16 @@ interface ApiClientConfig {
 }
 
 /**
- * API Request Options
+ * API Request Options - Extends AxiosRequestConfig for axios compatibility
  */
-interface ApiRequestOptions extends RequestInit {
+interface ApiRequestOptions
+  extends Omit<AxiosRequestConfig, 'url' | 'baseURL'> {
   /** Whether to bypass automatic token attachment for this request */
   skipAuth?: boolean
-  /** Custom timeout for this request */
-  timeout?: number
   /** Whether to retry on 401 errors */
   retryOn401?: boolean
+  /** Cancel token source for request cancellation */
+  cancelTokenSource?: CancelTokenSource
 }
 
 /**
@@ -46,10 +65,8 @@ interface ApiResponse<T = unknown> {
  * Request Context for Interceptors
  */
 interface RequestContext {
-  /** The URL being requested */
-  url: string
-  /** Request options */
-  options: ApiRequestOptions
+  /** The axios request config */
+  config: InternalAxiosRequestConfig
   /** Unique request ID for tracking */
   requestId: string
   /** Timestamp when request was initiated */
@@ -62,8 +79,8 @@ interface RequestContext {
 interface ResponseContext<T = unknown> {
   /** The original request context */
   request: RequestContext
-  /** The response data */
-  response: ApiResponse<T>
+  /** The axios response */
+  response: AxiosResponse<T>
   /** Time taken for the request in milliseconds */
   duration: number
 }
@@ -112,8 +129,10 @@ const createApiError = (
  * Provides a centralized HTTP client with automatic token attachment,
  * request/response interceptors, retry logic, and environment-based routing.
  * Follows the bulletproof-react patterns and integrates with our token management system.
+ * Uses axios for enhanced HTTP capabilities.
  */
 export class ApiClient {
+  private axiosInstance: AxiosInstance
   private config: Required<ApiClientConfig>
   private requestInterceptors: RequestInterceptor[] = []
   private responseInterceptors: ResponseInterceptor[] = []
@@ -131,79 +150,179 @@ export class ApiClient {
       ...config,
     }
 
+    // Create axios instance with base configuration
+    this.axiosInstance = axios.create({
+      baseURL: this.config.baseUrl,
+      timeout: this.config.timeout,
+      headers: this.config.defaultHeaders,
+    })
+
     // Add default interceptors
     this.addDefaultInterceptors()
   }
 
   /**
-   * Adds default request and response interceptors
+   * Adds default request and response interceptors using axios interceptors
    */
   private addDefaultInterceptors(): void {
-    // Request interceptor for token attachment
-    this.addRequestInterceptor(async (context) => {
-      if (this.config.requiresAuth && !context.options.skipAuth) {
-        try {
-          const token = await useTokenStore.getState().getValidToken()
-          context.options.headers = {
-            ...context.options.headers,
-            Authorization: `Bearer ${token}`,
+    // Axios request interceptor for token attachment
+    this.axiosInstance.interceptors.request.use(
+      async (config: InternalAxiosRequestConfig) => {
+        const requestId = this.generateRequestId()
+        const timestamp = Date.now()
+
+        // Add request ID to headers for tracking
+        config.headers['X-Request-ID'] = requestId
+
+        // Create request context for custom interceptors
+        const requestContext: RequestContext = {
+          config,
+          requestId,
+          timestamp,
+        }
+
+        // Process through custom request interceptors
+        const processedContext =
+          await this.processRequestInterceptors(requestContext)
+
+        // Handle token attachment if required
+        if (this.config.requiresAuth && !config.skipAuth) {
+          try {
+            const token = await useTokenStore.getState().getValidToken()
+            processedContext.config.headers.Authorization = `Bearer ${token}`
+          } catch (error) {
+            throw createApiError(
+              'AUTH_FAILED',
+              'Failed to obtain valid token for API request',
+              401,
+              error
+            )
           }
-        } catch (error) {
-          throw createApiError(
-            'AUTH_FAILED',
-            'Failed to obtain valid token for API request',
-            401,
-            error
+        }
+
+        return processedContext.config
+      },
+      (error) => {
+        return Promise.reject(this.transformError(error))
+      }
+    )
+
+    // Axios response interceptor for success handling and 401 retry
+    this.axiosInstance.interceptors.response.use(
+      async (response: AxiosResponse) => {
+        const requestId = response.config.headers['X-Request-ID'] as string
+        const timestamp = parseInt(
+          (response.config.headers['X-Request-Timestamp'] as string) || '0'
+        )
+
+        // Create response context for custom interceptors
+        const responseContext: ResponseContext = {
+          request: {
+            config: response.config,
+            requestId,
+            timestamp,
+          },
+          response,
+          duration: Date.now() - timestamp,
+        }
+
+        // Process through custom response interceptors
+        const processedContext =
+          await this.processResponseInterceptors(responseContext)
+
+        return processedContext.response
+      },
+      async (error: AxiosError) => {
+        // Handle 401 errors with token refresh and retry
+        if (
+          error.response?.status === 401 &&
+          !error.config?.retryOn401 === false
+        ) {
+          try {
+            await useTokenStore.getState().refreshToken()
+
+            // Clone the config for retry
+            const retryConfig = { ...error.config, retryOn401: false }
+            return this.axiosInstance.request(retryConfig)
+          } catch (refreshError) {
+            throw createApiError(
+              'AUTH_FAILED',
+              'Token refresh failed during 401 retry',
+              401,
+              refreshError
+            )
+          }
+        }
+
+        // Transform and process other errors
+        const transformedError = this.transformError(error)
+
+        if (error.config) {
+          const requestContext: RequestContext = {
+            config: error.config,
+            requestId:
+              (error.config.headers?.['X-Request-ID'] as string) || 'unknown',
+            timestamp: Date.now(),
+          }
+
+          return await this.processErrorInterceptors(
+            transformedError,
+            requestContext
           )
         }
+
+        throw transformedError
       }
-      return context
-    })
+    )
+  }
 
-    // Response interceptor for 401 handling
-    this.addResponseInterceptor(async <T>(context: ResponseContext<T>) => {
-      if (
-        context.response.status === 401 &&
-        context.request.options.retryOn401 !== false
-      ) {
-        // Token might be expired, try to refresh and retry
-        try {
-          await useTokenStore.getState().refreshToken()
-
-          // Retry the original request with the new token
-          const retryResponse = await this.request<T>(context.request.url, {
-            ...context.request.options,
-            retryOn401: false, // Prevent infinite retry loop
-          })
-
-          return {
-            ...context,
-            response: retryResponse,
-            duration: Date.now() - context.request.timestamp,
-          }
-        } catch (refreshError) {
-          throw createApiError(
-            'AUTH_FAILED',
-            'Token refresh failed during 401 retry',
-            401,
-            refreshError
-          )
-        }
+  /**
+   * Transforms axios errors to our AuthError format
+   */
+  private transformError(error: unknown): AuthError {
+    if (isAxiosError(error)) {
+      if (error.response) {
+        // HTTP error response
+        return createApiError(
+          error.response.status === 401
+            ? 'AUTH_FAILED'
+            : error.response.status >= 500
+              ? 'NETWORK_ERROR'
+              : 'INVALID_RESPONSE',
+          `HTTP ${error.response.status}: ${error.response.statusText}`,
+          error.response.status
+        )
+      } else if (error.request) {
+        // Network error
+        return createApiError(
+          'NETWORK_ERROR',
+          'Network request failed',
+          undefined,
+          error
+        )
+      } else if (error.code === 'ECONNABORTED') {
+        // Timeout error
+        return createApiError('NETWORK_ERROR', 'Request timeout', 408, error)
       }
+    }
 
-      return context
-    })
+    // Check if it's already an AuthError
+    if (
+      error &&
+      typeof error === 'object' &&
+      'type' in error &&
+      'timestamp' in error
+    ) {
+      return error as AuthError
+    }
 
-    // Error interceptor for network errors
-    this.addErrorInterceptor((error, context) => {
-      // Add request context to error for better debugging
-      throw {
-        ...error,
-        requestUrl: context.url,
-        requestId: context.requestId,
-        message: `${error.message} (Request ID: ${context.requestId})`,
-      }
-    })
+    // Unknown error
+    return createApiError(
+      'UNKNOWN_ERROR',
+      error instanceof Error ? error.message : 'Unknown error occurred',
+      undefined,
+      error
+    )
   }
 
   /**
@@ -285,126 +404,44 @@ export class ApiClient {
   }
 
   /**
-   * Makes an HTTP request with automatic token attachment and error handling
+   * Makes an HTTP request using axios with automatic token attachment and error handling
    */
   async request<T = unknown>(
     endpoint: string,
     options: ApiRequestOptions = {}
   ): Promise<ApiResponse<T>> {
-    const startTime = Date.now()
-    const requestId = this.generateRequestId()
-
-    // Build full URL
-    const url = endpoint.startsWith('http')
-      ? endpoint
-      : `${this.config.baseUrl}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`
-
-    // Prepare request context
-    let requestContext: RequestContext = {
-      url,
-      options: {
-        ...options,
-        headers: {
-          ...this.config.defaultHeaders,
-          ...options.headers,
-        },
-      },
-      requestId,
-      timestamp: startTime,
-    }
-
     try {
-      // Process request interceptors
-      requestContext = await this.processRequestInterceptors(requestContext)
-
-      // Set up timeout
-      const timeout = options.timeout || this.config.timeout
-      const controller = new AbortController()
-      const timeoutId = setTimeout(() => controller.abort(), timeout)
-
-      // Make the actual request
-      const response = await fetch(requestContext.url, {
-        ...requestContext.options,
-        signal: controller.signal,
-      })
-
-      clearTimeout(timeoutId)
-
-      // Parse response
-      let data: T
-      const contentType = response.headers.get('content-type')
-
-      if (contentType && contentType.includes('application/json')) {
-        data = await response.json()
-      } else {
-        data = (await response.text()) as unknown as T
+      // Prepare axios config
+      const axiosConfig: AxiosRequestConfig = {
+        url: endpoint,
+        ...options,
+        // Add timestamp for request tracking
+        headers: {
+          ...options.headers,
+          'X-Request-Timestamp': Date.now().toString(),
+        },
       }
 
-      // Create response object
+      // Make the request using axios
+      const response = await this.axiosInstance.request<T>(axiosConfig)
+
+      // Transform axios response to our ApiResponse format
       const apiResponse: ApiResponse<T> = {
-        data,
+        data: response.data,
         status: response.status,
-        headers: Object.fromEntries(response.headers.entries()),
-        ok: response.ok,
+        headers: Object.fromEntries(
+          Object.entries(response.headers).map(([key, value]) => [
+            key,
+            Array.isArray(value) ? value.join(', ') : String(value),
+          ])
+        ),
+        ok: response.status >= 200 && response.status < 300,
       }
 
-      // Handle non-ok responses
-      if (!response.ok) {
-        throw createApiError(
-          response.status === 401
-            ? 'AUTH_FAILED'
-            : response.status >= 500
-              ? 'NETWORK_ERROR'
-              : 'INVALID_RESPONSE',
-          `HTTP ${response.status}: ${response.statusText}`,
-          response.status
-        )
-      }
-
-      // Process response interceptors
-      const responseContext = await this.processResponseInterceptors({
-        request: requestContext,
-        response: apiResponse,
-        duration: Date.now() - startTime,
-      })
-
-      return responseContext.response
+      return apiResponse
     } catch (error) {
-      // Handle different types of errors
-      let apiError: AuthError
-
-      if (error instanceof Error) {
-        if (error.name === 'AbortError') {
-          apiError = createApiError(
-            'NETWORK_ERROR',
-            'Request timeout',
-            408,
-            error
-          )
-        } else if (error.message.includes('fetch')) {
-          apiError = createApiError(
-            'NETWORK_ERROR',
-            'Network request failed',
-            undefined,
-            error
-          )
-        } else if ('type' in error && 'timestamp' in error) {
-          // Already an AuthError
-          apiError = error as AuthError
-        } else {
-          apiError = createApiError(
-            'UNKNOWN_ERROR',
-            error.message || 'Unknown error occurred',
-            undefined,
-            error
-          )
-        }
-      } else {
-        apiError = error as AuthError
-      }
-
-      // Process error interceptors
-      return await this.processErrorInterceptors(apiError, requestContext)
+      // Transform and throw the error
+      throw this.transformError(error)
     }
   }
 
@@ -413,7 +450,7 @@ export class ApiClient {
    */
   async get<T = unknown>(
     endpoint: string,
-    options?: Omit<ApiRequestOptions, 'method' | 'body'>
+    options?: Omit<ApiRequestOptions, 'method' | 'data'>
   ): Promise<ApiResponse<T>> {
     return this.request<T>(endpoint, { ...options, method: 'GET' })
   }
@@ -424,12 +461,12 @@ export class ApiClient {
   async post<T = unknown>(
     endpoint: string,
     data?: unknown,
-    options?: Omit<ApiRequestOptions, 'method' | 'body'>
+    options?: Omit<ApiRequestOptions, 'method' | 'data'>
   ): Promise<ApiResponse<T>> {
     return this.request<T>(endpoint, {
       ...options,
       method: 'POST',
-      body: data ? JSON.stringify(data) : undefined,
+      data,
     })
   }
 
@@ -439,12 +476,12 @@ export class ApiClient {
   async put<T = unknown>(
     endpoint: string,
     data?: unknown,
-    options?: Omit<ApiRequestOptions, 'method' | 'body'>
+    options?: Omit<ApiRequestOptions, 'method' | 'data'>
   ): Promise<ApiResponse<T>> {
     return this.request<T>(endpoint, {
       ...options,
       method: 'PUT',
-      body: data ? JSON.stringify(data) : undefined,
+      data,
     })
   }
 
@@ -454,12 +491,12 @@ export class ApiClient {
   async patch<T = unknown>(
     endpoint: string,
     data?: unknown,
-    options?: Omit<ApiRequestOptions, 'method' | 'body'>
+    options?: Omit<ApiRequestOptions, 'method' | 'data'>
   ): Promise<ApiResponse<T>> {
     return this.request<T>(endpoint, {
       ...options,
       method: 'PATCH',
-      body: data ? JSON.stringify(data) : undefined,
+      data,
     })
   }
 
@@ -468,7 +505,7 @@ export class ApiClient {
    */
   async delete<T = unknown>(
     endpoint: string,
-    options?: Omit<ApiRequestOptions, 'method' | 'body'>
+    options?: Omit<ApiRequestOptions, 'method' | 'data'>
   ): Promise<ApiResponse<T>> {
     return this.request<T>(endpoint, { ...options, method: 'DELETE' })
   }

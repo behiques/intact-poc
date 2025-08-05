@@ -67,7 +67,7 @@ export default function AccountSearch() {
               <Pagination />
               <div>
                 <p className="font-semibold">Results per page:</p>
-                <select className="w-30 border-primary rounded border-2 bg-white px-4 py-2 text-sm">
+                <select className="border-primary w-30 rounded border-2 bg-white px-4 py-2 text-sm">
                   <option value="10">10</option>
                   <option value="15">15</option>
                   <option value="20">20</option>
@@ -76,9 +76,9 @@ export default function AccountSearch() {
               </div>
             </header>
             {results
-              .filter((item) => !!item?.term.status)
+              .filter((item: AccountSearchResult) => !!item?.term.status)
               .slice(0, 10)
-              .map((item, index) => (
+              .map((item: AccountSearchResult, index: number) => (
                 <SearchResult
                   key={index}
                   item={item}
@@ -97,11 +97,11 @@ export default function AccountSearch() {
   )
 
   function handleClick(item: AccountSearchResult) {
-    selectedAccount.includes(item.account.id)
-      ? setSelectedAccount(
-          selectedAccount.filter((id) => id !== item.account.id)
-        )
-      : setSelectedAccount([...selectedAccount, item.account.id])
+    if (selectedAccount.includes(item.account.id)) {
+      setSelectedAccount(selectedAccount.filter((id) => id !== item.account.id))
+    } else {
+      setSelectedAccount([...selectedAccount, item.account.id])
+    }
   }
 }
 
