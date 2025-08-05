@@ -147,6 +147,70 @@ export const ProducersQueryParamsSchema = z
   })
   .strict()
 
+/**
+ * Query parameters for Account Search API
+ * Maps to the clearance/v2/search endpoint parameters
+ */
+export interface AccountSearchQueryParams {
+  /** The account name to search for (required) */
+  AccountName: string
+  /** Filter to a specific business unit by ID (e.g., "R", "H") */
+  BusinessUnitId?: string
+  /** Filter by city name */
+  City?: string
+  /** Filter by effective date (ISO date-time format) */
+  EffectiveDate?: string
+  /** Filter by expiration date (ISO date-time format) */
+  ExpirationDate?: string
+  /** Filter by state */
+  State?: string
+  /** Filter by street address */
+  Street?: string
+  /** Filter by ZIP code */
+  Zip?: string
+}
+
+/**
+ * Zod schema for validating Account Search query parameters
+ */
+export const AccountSearchQueryParamsSchema = z
+  .object({
+    AccountName: z
+      .string()
+      .min(1, 'AccountName is required and cannot be empty')
+      .trim(),
+    BusinessUnitId: z
+      .string()
+      .min(1, 'BusinessUnitId cannot be empty')
+      .optional(),
+    City: z.string().min(1, 'City cannot be empty').optional(),
+    EffectiveDate: z
+      .string()
+      .regex(
+        /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z?$/,
+        'EffectiveDate must be in ISO date-time format (e.g., 2024-01-01T00:00:00Z)'
+      )
+      .optional(),
+    ExpirationDate: z
+      .string()
+      .regex(
+        /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z?$/,
+        'ExpirationDate must be in ISO date-time format (e.g., 2024-12-31T23:59:59Z)'
+      )
+      .optional(),
+    State: z.string().min(1, 'State cannot be empty').optional(),
+    Street: z.string().min(1, 'Street cannot be empty').optional(),
+    Zip: z
+      .string()
+      .min(1, 'Zip cannot be empty')
+      .regex(
+        /^\d{5}(-\d{4})?$/,
+        'Zip must be in valid format (e.g., 12345 or 12345-6789)'
+      )
+      .optional(),
+  })
+  .strict()
+
 export type AccountSearchResultProp = {
   item: AccountSearchResult
   showing: boolean
@@ -163,7 +227,6 @@ export type Account = {
   businessUnitId: string
   businessUnitName: string
   name: string
-  name2?: string
   producerCode: string
   producerName: string
   status: string
@@ -177,7 +240,6 @@ type Address = {
   city: string
   state: string
   zip: string
-  country?: string
 }
 
 export type Term = {
@@ -186,7 +248,6 @@ export type Term = {
     city: string | null
     state: string | null
     zip: string | null
-    country: string | null
   }
   businessUnitId: string
   businessUnitName: string
@@ -196,11 +257,6 @@ export type Term = {
   producerName: string
   programType: string
   territory: string | null
-  status: string
-  underwriter: string
-  schedule: string
-  cyberCovExists: boolean
-  eandOCovExists: boolean
 }
 
 export type AccountSearchFormProps = {
@@ -213,8 +269,16 @@ export type AccountSearchFormData = {
   policyContact?: string
   effectiveDate?: string
   expirationDate?: string
+  // New API parameters for clearance/v2/search endpoint
+  businessUnitId?: string
+  city?: string
+  state?: string
+  street?: string
+  zip?: string
 }
 
-export interface AccountSearchApiResponse {
-  data: AccountSearchResult[]
-}
+/**
+ * API response for account search queries from /samapi/api/clearance/v2/search
+ * Returns a direct array of account search results (not wrapped in data property)
+ */
+export type AccountSearchApiResponse = AccountSearchResult[]
