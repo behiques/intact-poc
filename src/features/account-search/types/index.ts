@@ -227,6 +227,7 @@ export type Account = {
   businessUnitId: string
   businessUnitName: string
   name: string
+  name2?: string
   producerCode: string
   producerName: string
   status: string
@@ -240,6 +241,7 @@ type Address = {
   city: string
   state: string
   zip: string
+  country?: string
 }
 
 export type Term = {
@@ -248,6 +250,7 @@ export type Term = {
     city: string | null
     state: string | null
     zip: string | null
+    country?: string | null
   }
   businessUnitId: string
   businessUnitName: string
@@ -257,6 +260,11 @@ export type Term = {
   producerName: string
   programType: string
   territory: string | null
+  status?: string
+  underwriter?: string
+  schedule?: string
+  cyberCovExists?: boolean
+  eandOCovExists?: boolean
 }
 
 export type AccountSearchFormProps = {
@@ -279,6 +287,8 @@ export type AccountSearchFormData = {
 
 /**
  * API response for account search queries from /samapi/api/clearance/v2/search
- * Returns a direct array of account search results (not wrapped in data property)
+ * Follows the standard API response pattern with data wrapper
  */
-export type AccountSearchApiResponse = AccountSearchResult[]
+export interface AccountSearchApiResponse {
+  data: AccountSearchResult[]
+}

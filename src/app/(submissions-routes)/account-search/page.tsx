@@ -76,9 +76,9 @@ export default function AccountSearch() {
               </div>
             </header>
             {results
-              .filter((item) => !!item?.term.status)
+              .filter((item: AccountSearchResult) => !!item?.term.status)
               .slice(0, 10)
-              .map((item, index) => (
+              .map((item: AccountSearchResult, index: number) => (
                 <SearchResult
                   key={index}
                   item={item}
