@@ -8,6 +8,7 @@ export async function GET(
   { params }: { params: Promise<{ producerCode: string }> }
 ) {
   try {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { producerCode } = await params
     const url = new URL(request.url)
 
@@ -22,8 +23,9 @@ export async function GET(
     // Validate query parameters
     const validatedParams = ContactsQueryParamsSchema.parse(queryParams)
 
-    // Get mock data for the producer (producerCode is used for future API integration)
-    // Currently returns filtered contacts based on query parameters
+    // Get mock data filtered by query parameters
+    // Note: producerCode parameter is reserved for future API integration with:
+    // /common-api/api/v1/common/producers/${producerCode}/contacts
     const mockResponse = getMockContacts(validatedParams)
 
     return NextResponse.json(mockResponse)
