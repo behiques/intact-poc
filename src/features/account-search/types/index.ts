@@ -182,14 +182,16 @@ export const AccountSearchQueryParamsSchema = z
     BusinessUnitId: z
       .string()
       .min(1, 'BusinessUnitId cannot be empty')
+      .trim()
       .optional(),
-    City: z.string().min(1, 'City cannot be empty').optional(),
+    City: z.string().min(1, 'City cannot be empty').trim().optional(),
     EffectiveDate: z
       .string()
       .regex(
         /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z?$/,
         'EffectiveDate must be in ISO date-time format (e.g., 2024-01-01T00:00:00Z)'
       )
+      .trim()
       .optional(),
     ExpirationDate: z
       .string()
@@ -197,12 +199,14 @@ export const AccountSearchQueryParamsSchema = z
         /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z?$/,
         'ExpirationDate must be in ISO date-time format (e.g., 2024-12-31T23:59:59Z)'
       )
+      .trim()
       .optional(),
-    State: z.string().min(1, 'State cannot be empty').optional(),
-    Street: z.string().min(1, 'Street cannot be empty').optional(),
+    State: z.string().min(1, 'State cannot be empty').trim().optional(),
+    Street: z.string().min(1, 'Street cannot be empty').trim().optional(),
     Zip: z
       .string()
       .min(1, 'Zip cannot be empty')
+      .trim()
       .regex(
         /^\d{5}(-\d{4})?$/,
         'Zip must be in valid format (e.g., 12345 or 12345-6789)'

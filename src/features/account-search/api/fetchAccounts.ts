@@ -45,25 +45,23 @@ const validateQueryParams = (
   if (!params) return undefined
 
   try {
-    // Since AccountName is required in the input type, we know it exists
-    // The schema will validate and transform the data correctly
-    const validatedParams = AccountSearchQueryParamsSchema.parse(params)
+    // First sanitize the raw input: trim whitespace and remove empty optional parameters
+    const sanitizedParams: Record<string, unknown> = {}
 
-    // Additional sanitization: remove empty string optional parameters
-    const sanitizedParams: Record<string, unknown> = { ...validatedParams }
-
-    // Remove empty optional parameters
-    Object.entries(sanitizedParams).forEach(([key, value]) => {
-      if (
-        key !== 'AccountName' &&
-        typeof value === 'string' &&
-        value.trim().length === 0
-      ) {
-        delete sanitizedParams[key]
+    Object.entries(params).forEach(([key, value]) => {
+      if (typeof value === 'string') {
+        const trimmedValue = value.trim()
+        // Keep AccountName even if empty (let Zod validation handle it)
+        // Remove other parameters if they're empty after trimming
+        if (key === 'AccountName' || trimmedValue.length > 0) {
+          sanitizedParams[key] = trimmedValue
+        }
+      } else {
+        sanitizedParams[key] = value
       }
     })
 
-    // Re-validate after sanitization to ensure type safety
+    // Validate the sanitized parameters with Zod schema
     return AccountSearchQueryParamsSchema.parse(sanitizedParams)
   } catch (error) {
     console.warn('Invalid account search query parameters:', error)
