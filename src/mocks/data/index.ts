@@ -10,10 +10,7 @@ export {
   mockBusinessUnitsData,
 } from './business-units.mock'
 export { getMockProducers, mockProducersData } from './producers.mock'
-export {
-  getMockPolicyContacts,
-  mockPolicyContactsData,
-} from './policy-contacts.mock'
+export { getMockContacts, mockContactsData } from './contacts.mock'
 export {
   getMockFinancialCloseDate,
   mockFinancialCloseDateData,
