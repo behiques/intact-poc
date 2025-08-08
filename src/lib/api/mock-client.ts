@@ -7,7 +7,7 @@ import {
   getMockAccountsForSearch,
   getMockBusinessUnits,
   getMockProducers,
-  getMockPolicyContacts,
+  getMockContacts,
   getMockFinancialCloseDate,
   getMockQuickLinks,
   getMockSubmissionsInbox,
@@ -98,8 +98,15 @@ export class MockApiClient implements ApiClientInterface {
       return getMockProducers() as T
     }
 
-    if (endpoint === '/policyContacts' && method === 'GET') {
-      return getMockPolicyContacts() as T
+    // Contacts endpoints - support both legacy and new backend paths
+    if (
+      (endpoint === '/policyContacts' ||
+        endpoint.match(
+          /^\/common-api\/api\/v1\/common\/producers\/[^/]+\/contacts$/
+        )) &&
+      method === 'GET'
+    ) {
+      return getMockContacts(params) as T
     }
 
     // Dashboard endpoints

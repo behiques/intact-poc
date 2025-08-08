@@ -10,7 +10,7 @@ import {
   Producer,
 } from '../types'
 import { useProducers } from '../hooks/useProducers'
-import { usePolicyContacts } from '../hooks/usePolicyContacts'
+import { useContacts } from '../hooks/useContacts'
 
 export const AccountSearchForm = ({ onSearch }: AccountSearchFormProps) => {
   const {
@@ -40,11 +40,11 @@ export const AccountSearchForm = ({ onSearch }: AccountSearchFormProps) => {
     })) || []
 
   const producerCode = watch('producer') as string
-  const { items: policyContacts } = usePolicyContacts(producerCode)
+  const { items: contacts } = useContacts(producerCode)
 
   // Fix: ensure value is string for SelectOption
   const policyContactsOptions: SelectOption[] =
-    policyContacts?.map((contact: PolicyContact) => ({
+    contacts?.map((contact: PolicyContact) => ({
       value: String(contact.producerContactId),
       label: `${contact.firstName} - ${contact.lastName}`,
     })) || []

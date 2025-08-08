@@ -83,6 +83,78 @@ export interface PolicyContactApiResponse {
   data: PolicyContact[]
 }
 
+/**
+ * Contact interface for the new contacts API
+ * Maintains the same structure as PolicyContact for compatibility
+ */
+export interface Contact {
+  producerContactId: number
+  firstName: string
+  lastName: string
+  email?: string
+  phone?: string
+}
+
+/**
+ * API response interface for contacts
+ */
+export interface ContactApiResponse {
+  data: Contact[]
+}
+
+/**
+ * Query parameters for Contacts API
+ * All parameters are optional to provide flexible filtering options
+ */
+export interface ContactsQueryParams {
+  /** Filter to a specific contact by producer contact ID (e.g., 123) */
+  ProducerContactId?: number
+  /** Comma-separated list of fields to return (e.g., "LastName,Email", "ProducerContactId,FirstName,LastName,Email,Phone") */
+  Fields?: string
+}
+
+/**
+ * Zod schema for validating Contacts query parameters
+ */
+export const ContactsQueryParamsSchema = z
+  .object({
+    ProducerContactId: z
+      .number()
+      .int()
+      .positive('ProducerContactId must be a positive integer')
+      .optional(),
+    Fields: z
+      .string()
+      .min(1, 'Fields cannot be empty')
+      .regex(
+        /^[a-zA-Z]+(,[a-zA-Z]+)*$/,
+        'Fields must be comma-separated field names'
+      )
+      .optional(),
+  })
+  .strict()
+
+/**
+ * Zod schema for validating individual Contact objects
+ */
+export const ContactSchema = z.object({
+  producerContactId: z
+    .number()
+    .int()
+    .positive('ProducerContactId must be a positive integer'),
+  firstName: z.string().min(1, 'FirstName cannot be empty'),
+  lastName: z.string().min(1, 'LastName cannot be empty'),
+  email: z.string().email('Invalid email format').optional().nullable(),
+  phone: z.string().min(1, 'Phone cannot be empty').optional().nullable(),
+})
+
+/**
+ * Zod schema for validating Contact API responses
+ */
+export const ContactApiResponseSchema = z.object({
+  data: z.array(ContactSchema),
+})
+
 export interface Producer {
   producerCode: string
   name: string
