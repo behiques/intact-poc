@@ -4,7 +4,7 @@ import React from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 
 import { CustomTable } from '@/features/ui/Table'
-import type { Worklist } from '@/features/submissions/types'
+import type { Submission } from '@/features/submissions/types'
 import { useSubmissions } from '@/features/submissions/hooks/useSubmissions'
 import { PageHeader } from '@/features/submissions/components/PageHeader'
 import { EditPenIcon } from '@/features/ui/Icons/EditPenIcon'
@@ -14,7 +14,7 @@ import commentIcon from '@/features/submissions/assets/comment.png'
 import commentFilledIcon from '@/features/submissions/assets/comment-filled.png'
 
 export default function SubmissionsWorklistPage() {
-  const columns = React.useMemo<ColumnDef<Worklist>[]>(
+  const columns = React.useMemo<ColumnDef<Submission>[]>(
     () => [
       {
         accessorFn: (row) => row.EmailDetails?.from,

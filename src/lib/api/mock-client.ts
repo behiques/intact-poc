@@ -10,6 +10,8 @@ import {
   getMockPolicyContacts,
   getMockFinancialCloseDate,
   getMockQuickLinks,
+  getMockSubmissionsInbox,
+  getMockSubmissionsWorklist,
 } from '@/mocks/data'
 
 /**
@@ -108,6 +110,15 @@ export class MockApiClient implements ApiClientInterface {
     // Header endpoints
     if (endpoint === '/quickLinks' && method === 'GET') {
       return getMockQuickLinks() as T
+    }
+
+    // Submissions endpoints
+    if (endpoint === '/submissions?query=inbox' && method === 'GET') {
+      return getMockSubmissionsInbox() as T
+    }
+
+    if (endpoint === '/submissions?query=worklist' && method === 'GET') {
+      return getMockSubmissionsWorklist() as T
     }
 
     // Token endpoint (for auth flow testing)

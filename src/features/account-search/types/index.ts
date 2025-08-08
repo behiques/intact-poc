@@ -85,15 +85,17 @@ export interface PolicyContactApiResponse {
 
 export interface Producer {
   producerCode: string
-  businessUnitId: string
   name: string
-  phone: string
-  isActive: boolean
   address1: string
-  address2: string
   city: string
   stateCode: string
   zip: string
+  territoryId: string
+  territoryName: string
+  businessUnitId: string
+  phone: string
+  isActive: boolean
+  address2: string
   countryCode: string | null
   mailAddress1: string
   mailAddress2: string
@@ -107,9 +109,7 @@ export interface Producer {
   billStateCode: string
   billZip: string
   billCountryCode: string | null
-  territoryId: string
   territoryDescription: string
-  territoryName: string
 }
 
 /**
@@ -125,7 +125,9 @@ export interface ProducersQueryParams {
   ReturnAll?: boolean
 }
 
-export type ProducerApiResponse = Producer[]
+export type ProducerApiResponse = {
+  data: Producer[]
+}
 
 /**
  * Zod schema for validating Producers query parameters

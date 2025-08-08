@@ -19,3 +19,11 @@ export {
   mockFinancialCloseDateData,
 } from './financial-close-date.mock'
 export { getMockQuickLinks, mockQuickLinksData } from './quick-links.mock'
+export {
+  getMockSubmissionsInbox,
+  mockSubmissionsInboxData,
+} from './submissions-inbox'
+export {
+  getMockSubmissionsWorklist,
+  mockSubmissionsWorklistData,
+} from './submissions-worklist.mock'
