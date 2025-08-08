@@ -18,6 +18,7 @@ import {
 import { useQuickLinks } from '../hooks/useQuickLinks'
 import { pathnameToTitle } from '@/utils/stringFormatter'
 import { SelectField, SelectOption } from '@/features/ui/Form/Select'
+import { QuickLink } from '../types'
 
 const navLinks = [
   { href: '/', label: 'Dashboard' },
@@ -53,7 +54,7 @@ export const Header = () => {
 
   const { items: quickLinks, isLoading } = useQuickLinks()
   const quickLinkOptions =
-    quickLinks?.map((link) => ({
+    quickLinks?.map((link: QuickLink) => ({
       value: link.url,
       label: link.name,
     })) || []

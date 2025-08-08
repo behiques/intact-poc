@@ -1,25 +1,23 @@
 import { useQuery } from '@tanstack/react-query'
 import { SubmissionWorklistApiResponse } from '../types'
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'
+import { apiClient } from '@/lib/api'
 
 // REST API call - bulletproof pattern keeps API logic in feature/api folder
 export const fetchSubmissions = async ({
   query,
 }: {
-  query: string
+  query: 'inbox' | 'worklist'
 }): Promise<SubmissionWorklistApiResponse> => {
-  const response = await fetch(`${API_BASE_URL}/api/submissions?query=${query}`)
+  // Direct call to backend API (or mock based on environment)
+  const response = await apiClient.get<SubmissionWorklistApiResponse>(
+    `/submissions?query=${query}`
+  )
 
-  if (!response.ok) {
-    throw new Error(`Failed to fetch submissions: ${response.statusText}`)
-  }
-
-  return response.json()
+  return response.data
 }
 
 // React Query hooks for data fetching
-export const useSubmissionsQuery = (query: string) => {
+export const useSubmissionsQuery = (query: 'inbox' | 'worklist') => {
   return useQuery({
     queryKey: ['submissions', query],
     queryFn: () => fetchSubmissions({ query }),
