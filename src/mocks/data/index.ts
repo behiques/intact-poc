@@ -24,3 +24,10 @@ export {
   getMockSubmissionsWorklist,
   mockSubmissionsWorklistData,
 } from './submissions-worklist.mock'
+
+export { getMockTerritories, mockTerritoriesData } from './territories.mock'
+export { getMockSICs, mockSICsData } from './sics.mock'
+export {
+  getMockLegalEntities,
+  mockLegalEntitiesData,
+} from './legal-entities.mock'

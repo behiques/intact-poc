@@ -158,17 +158,18 @@ export const mockAccountsData = {
  * Can be extended to return different data based on search criteria
  */
 export const getMockAccountsForSearch = (params: {
-  accountName?: string
-  producerCode?: string
-  businessUnitId?: string
-  accountId?: string
+  AccountName?: string
+  ProducerCode?: string
+  BusinessUnitId?: string
+  AccountId?: string
 }): AccountSearchApiResponse => {
   // Return empty if no search criteria
+
   if (
-    !params.accountName &&
-    !params.producerCode &&
-    !params.businessUnitId &&
-    !params.accountId
+    !params.AccountName &&
+    !params.ProducerCode &&
+    !params.BusinessUnitId &&
+    !params.AccountId
   ) {
     return { data: [] }
   }

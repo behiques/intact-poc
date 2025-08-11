@@ -128,7 +128,7 @@ export const AccountSearchForm = ({ onSearch }: AccountSearchFormProps) => {
 
         <div className="mb-4">
           <label className="block text-sm font-bold">For Producer</label>
-          <div className="flex justify-between">
+          <div className="flex justify-between space-x-4">
             <Controller
               control={control}
               name="producer"

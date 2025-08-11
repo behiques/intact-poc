@@ -30,7 +30,7 @@ export const SelectField: React.FC<SelectProps> = ({
   isInvalid,
   ...props
 }) => (
-  <div>
+  <div className="grow">
     <label
       htmlFor="email"
       className="block text-sm/6 font-bold text-gray-900 relative"
