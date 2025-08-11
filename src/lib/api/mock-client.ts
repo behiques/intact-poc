@@ -1,3 +1,4 @@
+import { getMockTerritories } from '@/mocks/data/territories.mock'
 import type {
   ApiClientInterface,
   ApiRequestOptions,
@@ -11,6 +12,8 @@ import {
   getMockFinancialCloseDate,
   getMockQuickLinks,
 } from '@/mocks/data'
+import { getMockSICs } from '@/mocks/data/sics.mock'
+import { getMockLegalEntities } from '@/mocks/data/legal-entities.mock'
 
 /**
  * Mock API Client for development and testing
@@ -115,6 +118,21 @@ export class MockApiClient implements ApiClientInterface {
     // Header endpoints
     if (endpoint === '/quickLinks' && method === 'GET') {
       return getMockQuickLinks() as T
+    }
+
+    // Territories endpoints
+    if (endpoint === '/territories' && method === 'GET') {
+      return getMockTerritories() as T
+    }
+
+    // SICs endpoints
+    if (endpoint === '/sics' && method === 'GET') {
+      return getMockSICs() as T
+    }
+
+    // Legal Entities endpoints
+    if (endpoint === '/legal-entities' && method === 'GET') {
+      return getMockLegalEntities() as T
     }
 
     // Token endpoint (for auth flow testing)

@@ -6,6 +6,8 @@ import {
   AccountSearchFormData,
   AccountSearchFormProps,
   BusinessUnit,
+  PolicyContact,
+  Producer,
 } from '../types'
 import { useProducers } from '../hooks/useProducers'
 import { useContacts } from '../hooks/useContacts'
@@ -32,7 +34,7 @@ export const AccountSearchForm = ({ onSearch }: AccountSearchFormProps) => {
   const { items: producers } = useProducers(selectedBusinessUnit)
 
   const producersOptions: SelectOption[] =
-    producers?.map((producer) => ({
+    producers?.map((producer: Producer) => ({
       value: producer.producerCode,
       label: `${producer.producerCode} - ${producer.name} - ${producer.address1} ${producer.city}, ${producer.stateCode}`,
     })) || []
@@ -42,7 +44,7 @@ export const AccountSearchForm = ({ onSearch }: AccountSearchFormProps) => {
 
   // Fix: ensure value is string for SelectOption
   const policyContactsOptions: SelectOption[] =
-    contacts?.map((contact) => ({
+    contacts?.map((contact: PolicyContact) => ({
       value: String(contact.producerContactId),
       label: `${contact.firstName} - ${contact.lastName}`,
     })) || []

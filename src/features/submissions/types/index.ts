@@ -33,3 +33,42 @@ type EmailDetails = {
 export type SubmissionWorklistApiResponse = {
   data: Worklist[]
 }
+
+export type Step = {
+  name: string
+  description: string
+  index: number
+  status: 'current' | 'upcoming' | 'complete'
+}
+
+export type Territory = {
+  businessUnitId: string
+  description: string
+  groupOrder: number
+  isActive: boolean
+  name: string
+  value: string
+}
+
+export type TerritoryApiResponse = {
+  data: Territory[]
+}
+
+export type SIC = {
+  sicCode: number
+  riskCode: number
+  description: string
+}
+
+export type SICApiResponse = {
+  data: SIC[]
+}
+
+export type LegalEntity = {
+  value: string
+  label: string
+}
+
+export type LegalEntityApiResponse = {
+  data: LegalEntity[]
+}
