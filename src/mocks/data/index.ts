@@ -19,7 +19,7 @@ export { getMockQuickLinks, mockQuickLinksData } from './quick-links.mock'
 export {
   getMockSubmissionsInbox,
   mockSubmissionsInboxData,
-} from './submissions-inbox'
+} from './submissions-inbox.mock'
 export {
   getMockSubmissionsWorklist,
   mockSubmissionsWorklistData,
