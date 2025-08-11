@@ -41,7 +41,7 @@ export const useProducers = (
 
   return {
     /** Array of producers matching the query parameters */
-    items: data,
+    items: data?.data || [],
     /** Loading state - true when the query is in progress */
     isLoading,
     /** Error object if the query failed */

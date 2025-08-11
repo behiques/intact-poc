@@ -153,5 +153,7 @@ export const mockProducersData: Producer[] = [
  * Helper to get mock producers API response
  */
 export const getMockProducers = (): ProducerApiResponse => {
-  return mockProducersData
+  return {
+    data: mockProducersData,
+  }
 }

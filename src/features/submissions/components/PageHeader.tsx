@@ -2,8 +2,11 @@ import { SearchIcon } from '@/features/header/assets/Icons'
 import Link from 'next/link'
 import { RefreshIcon } from '../assets/Icons'
 import { CreateSubmissionIcon } from '@/features/ui/Icons/CreateSubmissions'
+import { usePathname } from 'next/navigation'
 
 export const PageHeader = ({ title }: { title: string }) => {
+  const pathname = usePathname()
+
   return (
     <>
       <Link
@@ -18,7 +21,11 @@ export const PageHeader = ({ title }: { title: string }) => {
           <li>
             <Link
               href="/submissions/inbox"
-              className="hover:bg-primary-lightest block w-60 border border-gray-300 bg-white p-2 text-center font-bold"
+              className={`hover:bg-primary-lightest block w-60 border border-gray-300 p-2 text-center font-bold ${
+                pathname === '/submissions/inbox'
+                  ? 'bg-primary-lightest text-primary border-b-primary border-b-2'
+                  : 'bg-white text-gray-700'
+              }`}
             >
               Inbox
             </Link>
@@ -26,7 +33,11 @@ export const PageHeader = ({ title }: { title: string }) => {
           <li>
             <Link
               href="/submissions/worklist"
-              className="bg-primary-lightest text-primary border-b-primary block w-60 border border-b-2 border-gray-300 p-2 text-center font-bold"
+              className={`hover:bg-primary-lightest block w-60 border border-gray-300 p-2 text-center font-bold ${
+                pathname === '/submissions/worklist'
+                  ? 'bg-primary-lightest text-primary border-b-primary border-b-2'
+                  : 'bg-white text-gray-700'
+              }`}
             >
               Worklist
             </Link>

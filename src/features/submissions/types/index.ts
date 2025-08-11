@@ -1,9 +1,9 @@
-export type Worklist = {
-  AccountId: number
+export type Submission = {
+  AccountId: number | null
   SubmissionId: number
   AssignedToId: string
-  AssignedToName: string
-  BusinessUnitId: string
+  AssignedToName: string | null
+  BusinessUnitId: string | null
   Comment: string | null
   SubmissionStatusId: number
   IsRush: boolean | null
@@ -31,7 +31,7 @@ type EmailDetails = {
 }
 
 export type SubmissionWorklistApiResponse = {
-  data: Worklist[]
+  data: Submission[]
 }
 
 export type Step = {

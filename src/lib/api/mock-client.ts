@@ -11,6 +11,8 @@ import {
   getMockContacts,
   getMockFinancialCloseDate,
   getMockQuickLinks,
+  getMockSubmissionsInbox,
+  getMockSubmissionsWorklist,
 } from '@/mocks/data'
 import { getMockSICs } from '@/mocks/data/sics.mock'
 import { getMockLegalEntities } from '@/mocks/data/legal-entities.mock'
@@ -133,6 +135,15 @@ export class MockApiClient implements ApiClientInterface {
     // Legal Entities endpoints
     if (endpoint === '/legal-entities' && method === 'GET') {
       return getMockLegalEntities() as T
+    }
+
+    // Submissions endpoints
+    if (endpoint === '/submissions?query=inbox' && method === 'GET') {
+      return getMockSubmissionsInbox() as T
+    }
+
+    if (endpoint === '/submissions?query=worklist' && method === 'GET') {
+      return getMockSubmissionsWorklist() as T
     }
 
     // Token endpoint (for auth flow testing)
