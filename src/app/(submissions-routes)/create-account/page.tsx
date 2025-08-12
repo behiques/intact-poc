@@ -5,8 +5,10 @@ import {
   SubmissionContext,
   SubmissionContextType,
 } from '@/providers/create-account-provider'
-import { StepOne } from '@/features/submissions/components/CreateAccount1'
+import { SetupAccount } from '@/features/submissions/components/SetupAccount'
 import { Step } from '@/features/submissions/types'
+import { Summary } from '@/features/submissions/components/Summary'
+import Link from 'next/link'
 
 export default function SubmissionsPage() {
   const { steps, updateSteps } = useContext(
@@ -25,16 +27,20 @@ export default function SubmissionsPage() {
 
       {activeStep.index === 1 && (
         <div className="overflow-x-auto min-h-screen">
-          <StepOne />
+          <SetupAccount />
         </div>
       )}
       {activeStep.index === 2 && <div>Step 2 Content</div>}
-      {activeStep.index === 3 && <div>Step 3 Content</div>}
+      {activeStep.index === 3 && (
+        <div>
+          <Summary />
+        </div>
+      )}
       {activeStep.index === 4 && <div>Step 4 Content</div>}
       {activeStep.index === 5 && <div>Step 5 Content</div>}
 
       <footer className="fixed start-0 bottom-0 p-3 bg-teal-50 w-full text-right space-x-7">
-        {activeStep.index > 1 && (
+        {activeStep.index > 1 && activeStep.index !== 3 && (
           <button
             onClick={handleSave}
             className="font-bold text-teal-800 bg-transparent py-2 px-4 rounded-sm text-sm cursor-pointer"
@@ -44,7 +50,7 @@ export default function SubmissionsPage() {
           </button>
         )}
 
-        {activeStep.index < 6 && (
+        {activeStep.index < 3 && (
           <button
             onClick={handleNext}
             className="font-bold text-white bg-teal-800 py-2 px-4 rounded-sm text-sm cursor-pointer"
@@ -52,6 +58,15 @@ export default function SubmissionsPage() {
           >
             {nextStep?.description}
           </button>
+        )}
+
+        {activeStep.index === 3 && (
+          <Link
+            className="font-bold text-teal-800 bg-transparent py-2 px-4 rounded-sm text-sm cursor-pointer"
+            href="/submissions"
+          >
+            View Submissions
+          </Link>
         )}
       </footer>
     </div>

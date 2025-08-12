@@ -1,5 +1,6 @@
 'use client'
 
+import { LoaderSpinner } from '@/features/ui/LoaderSpinner'
 import { useRouter } from 'next/navigation'
 
 export default function SubmissionsPage() {
@@ -7,8 +8,8 @@ export default function SubmissionsPage() {
 
   router.push('/submissions/inbox')
   return (
-    <>
-      <h1>Redirecting...</h1>
-    </>
+    <div className="flex items-center justify-center h-64">
+      <LoaderSpinner />
+    </div>
   )
 }

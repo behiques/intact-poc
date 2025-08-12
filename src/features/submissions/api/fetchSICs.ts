@@ -6,7 +6,6 @@ import { apiClient } from '@/lib/api'
 export const fetchSICs = async (): Promise<TerritoryApiResponse> => {
   // Direct call to backend API (or mock based on environment)
   const response = await apiClient.get<TerritoryApiResponse>('/sics')
-  console.log({ response })
 
   return response.data
 }

@@ -13,7 +13,7 @@ import { SIC, Territory } from '../types'
 import { useSICs } from '../hooks/useSICs'
 import { useLegalEntities } from '../hooks/useLegalEntities'
 
-export const StepOne = () => {
+export const SetupAccount = () => {
   const { register, handleSubmit, getValues, watch, control } = useForm()
 
   // Fetch business units

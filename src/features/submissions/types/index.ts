@@ -72,3 +72,16 @@ export type LegalEntity = {
 export type LegalEntityApiResponse = {
   data: LegalEntity[]
 }
+
+export type Customer = {
+  addressDescription: string
+  addressId: number
+  businessUnitId: string
+  customerId: number
+  customerName1: string
+  customerName2: string
+}
+
+export type CustomerSearchApiResponse = {
+  data: Customer[]
+}
