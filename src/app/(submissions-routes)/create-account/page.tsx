@@ -9,6 +9,7 @@ import { SetupAccount } from '@/features/submissions/components/SetupAccount'
 import { Step } from '@/features/submissions/types'
 import { Summary } from '@/features/submissions/components/Summary'
 import Link from 'next/link'
+import { SetupSubmission } from '@/features/submissions/components/SetupSubmission'
 
 export default function SubmissionsPage() {
   const { steps, updateSteps } = useContext(
@@ -30,12 +31,8 @@ export default function SubmissionsPage() {
           <SetupAccount />
         </div>
       )}
-      {activeStep.index === 2 && <div>Step 2 Content</div>}
-      {activeStep.index === 3 && (
-        <div>
-          <Summary />
-        </div>
-      )}
+      {activeStep.index === 2 && <SetupSubmission />}
+      {activeStep.index === 3 && <Summary />}
       {activeStep.index === 4 && <div>Step 4 Content</div>}
       {activeStep.index === 5 && <div>Step 5 Content</div>}
 

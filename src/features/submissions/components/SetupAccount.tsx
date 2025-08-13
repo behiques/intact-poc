@@ -14,7 +14,7 @@ import { useSICs } from '../hooks/useSICs'
 import { useLegalEntities } from '../hooks/useLegalEntities'
 
 export const SetupAccount = () => {
-  const { register, handleSubmit, getValues, watch, control } = useForm()
+  const { register, handleSubmit, watch, control } = useForm()
 
   // Fetch business units
   const { items: businessUnits, isLoading: loadingBusinessUnits } =
@@ -133,7 +133,9 @@ export const SetupAccount = () => {
           {...register('existingCustomer')}
         />
 
-        {getValues('existingCustomer')}
+        {watch('existingCustomer') && (
+          <InputField label="Customer name" required />
+        )}
 
         <div className="grid grid-cols-2 gap-7">
           <InputField
@@ -160,6 +162,7 @@ export const SetupAccount = () => {
           name="producer"
           render={({ field: { onChange, value } }) => (
             <SelectField
+              label="Producer"
               value={producersOptions.find(
                 (option: SelectOption) => option.value === value
               )}
@@ -181,10 +184,22 @@ export const SetupAccount = () => {
           )}
         />
 
-        <CheckboxField label="Is International?" required />
+        <CheckboxField
+          label="Is International?"
+          {...register('isInternational')}
+        />
 
         <SelectField label="Address Search" />
         <InputField label="Street" required />
+        <div className="grid grid-cols-3 gap-4">
+          <InputField label="City" required />
+          <InputField label="State" required />
+          <InputField label="Zip Code" required />
+        </div>
+
+        {watch('isInternational') && <InputField label="Country" required />}
+
+        <InputField label="Attn or C/O" />
       </FormGroup>
 
       <FormGroup headerText="Account Details">

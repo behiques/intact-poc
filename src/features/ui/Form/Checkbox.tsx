@@ -12,10 +12,7 @@ export const CheckboxField = ({
       <div className="flex h-6 shrink-0 items-center">
         <div className="group grid size-4 grid-cols-1">
           <input
-            id="comments"
-            name="comments"
             type="checkbox"
-            aria-describedby="comments-description"
             className="col-start-1 row-start-1 appearance-none rounded-sm border border-gray-300 bg-white checked:border-teal-600 checked:bg-teal-600 indeterminate:border-teal-600 indeterminate:bg-teal-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"
             {...rest}
           />
