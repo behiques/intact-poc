@@ -16,6 +16,7 @@ export {
   mockFinancialCloseDateData,
 } from './financial-close-date.mock'
 export { getMockQuickLinks, mockQuickLinksData } from './quick-links.mock'
+export { getMockSubmissions, mockSubmissionsData } from './submissions.mock'
 export {
   getMockSubmissionsInbox,
   mockSubmissionsInboxData,

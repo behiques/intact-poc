@@ -72,6 +72,290 @@ export const BusinessUnitApiResponseSchema = z.object({
   data: z.array(BusinessUnitSchema),
 })
 
+/**
+ * Tag interface for email details within submissions
+ */
+export interface Tag {
+  documentId: number
+  name: string
+}
+
+/**
+ * Email details interface for submissions
+ */
+export interface EmailDetails {
+  id: number
+  externalId: string
+  from: string
+  subject: string
+  receivedDate: string
+  source: string
+  sourceAddress: string
+  isImportant: boolean
+  tags: Tag[]
+}
+
+/**
+ * Submission interface representing the complete submission data structure
+ * Based on the API response specification from /api/v1/submissions
+ */
+export interface Submission {
+  /** Unique identifier for the account */
+  accountId: number
+  /** Unique identifier for the submission */
+  submissionId: number
+  /** ID of the user assigned to this submission */
+  assignedToId: string
+  /** Name of the user assigned to this submission */
+  assignedToName: string
+  /** Business unit identifier */
+  businessUnitId: string
+  /** Comments associated with the submission */
+  comment: string
+  /** Status identifier for the submission */
+  submissionStatusId: number
+  /** Indicates if this is a rush submission */
+  isRush: boolean
+  /** Code indicating the reason for rush processing */
+  rushReasonCode: number
+  /** Target date for broker actions (ISO date-time format) */
+  brokerTargetDate: string
+  /** Target date for underwriter actions (ISO date-time format) */
+  underwriterTargetDate: string
+  /** Indicates if submission should be sent to rating */
+  isSendToRating: boolean
+  /** Instructions for underwriting */
+  underwritingInstructions: string
+  /** Comments specifically for the underwriter */
+  commentsForUnderwriter: string
+  /** Human-readable description of the submission status */
+  submissionStatusDescription: string
+  /** Email details associated with the submission */
+  emailDetails: EmailDetails
+  /** Date when the submission was created (ISO date-time format) */
+  createdDate: string
+}
+
+/**
+ * Query parameters for Submissions API
+ * All parameters are optional to provide flexible filtering options
+ */
+export interface SubmissionsQueryParams {
+  /** Filter submissions by assigned user ID (e.g., "user123") */
+  AssignedToId?: string
+  /** Comma-separated list of fields to return (e.g., "BusinessUnitId,submissionStatusDescription") */
+  Fields?: string
+  /** Filter submissions by business unit ID (e.g., "R", "H") */
+  BusinessUnitsId?: string
+  /** Comma-separated list of submission statuses to filter by (e.g., "Draft,InProgress,Completed") */
+  SubmissionStatuses?: string
+}
+
+/**
+ * Zod schema for validating Submissions query parameters
+ */
+export const SubmissionsQueryParamsSchema = z
+  .object({
+    AssignedToId: z.string().min(1, 'AssignedToId cannot be empty').optional(),
+    Fields: z
+      .string()
+      .min(1, 'Fields cannot be empty')
+      .regex(
+        /^[a-zA-Z]+(,[a-zA-Z]+)*$/,
+        'Fields must be comma-separated field names'
+      )
+      .optional(),
+    BusinessUnitsId: z
+      .string()
+      .min(1, 'BusinessUnitsId cannot be empty')
+      .optional(),
+    SubmissionStatuses: z
+      .string()
+      .min(1, 'SubmissionStatuses cannot be empty')
+      .regex(
+        /^[a-zA-Z]+(,[a-zA-Z]+)*$/,
+        'SubmissionStatuses must be comma-separated status names'
+      )
+      .optional(),
+  })
+  .strict()
+
+/**
+ * Zod schema for validating Tag objects
+ */
+export const TagSchema = z.object({
+  documentId: z
+    .number()
+    .int()
+    .nonnegative('DocumentId must be a non-negative integer'),
+  name: z.string().min(1, 'Tag name cannot be empty'),
+})
+
+/**
+ * Zod schema for validating EmailDetails objects
+ */
+export const EmailDetailsSchema = z.object({
+  id: z.number().int().nonnegative('Email ID must be a non-negative integer'),
+  externalId: z.string().min(1, 'ExternalId cannot be empty'),
+  from: z.string().min(1, 'From field cannot be empty'),
+  subject: z.string().min(1, 'Subject cannot be empty'),
+  receivedDate: z
+    .string()
+    .regex(
+      /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z?$/,
+      'ReceivedDate must be in ISO date-time format'
+    ),
+  source: z.string().min(1, 'Source cannot be empty'),
+  sourceAddress: z.string().min(1, 'SourceAddress cannot be empty'),
+  isImportant: z.boolean(),
+  tags: z.array(TagSchema),
+})
+
+/**
+ * Zod schema for validating individual Submission objects
+ */
+export const SubmissionSchema = z.object({
+  accountId: z
+    .number()
+    .int()
+    .nonnegative('AccountId must be a non-negative integer'),
+  submissionId: z
+    .number()
+    .int()
+    .nonnegative('SubmissionId must be a non-negative integer'),
+  assignedToId: z.string().min(1, 'AssignedToId cannot be empty'),
+  assignedToName: z.string().min(1, 'AssignedToName cannot be empty'),
+  businessUnitId: z.string().min(1, 'BusinessUnitId cannot be empty'),
+  comment: z.string(),
+  submissionStatusId: z
+    .number()
+    .int()
+    .nonnegative('SubmissionStatusId must be a non-negative integer'),
+  isRush: z.boolean(),
+  rushReasonCode: z
+    .number()
+    .int()
+    .nonnegative('RushReasonCode must be a non-negative integer'),
+  brokerTargetDate: z
+    .string()
+    .regex(
+      /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z?$/,
+      'BrokerTargetDate must be in ISO date-time format'
+    ),
+  underwriterTargetDate: z
+    .string()
+    .regex(
+      /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z?$/,
+      'UnderwriterTargetDate must be in ISO date-time format'
+    ),
+  isSendToRating: z.boolean(),
+  underwritingInstructions: z.string(),
+  commentsForUnderwriter: z.string(),
+  submissionStatusDescription: z
+    .string()
+    .min(1, 'SubmissionStatusDescription cannot be empty'),
+  emailDetails: EmailDetailsSchema,
+  createdDate: z
+    .string()
+    .regex(
+      /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z?$/,
+      'CreatedDate must be in ISO date-time format'
+    ),
+})
+
+/**
+ * Zod schema for validating PagingInfo objects
+ */
+export const PagingInfoSchema = z.object({
+  page: z.number().int().nonnegative('Page must be a non-negative integer'),
+  pageSize: z.number().int().positive('PageSize must be a positive integer'),
+  totalPages: z
+    .number()
+    .int()
+    .nonnegative('TotalPages must be a non-negative integer'),
+  totalRecords: z
+    .number()
+    .int()
+    .nonnegative('TotalRecords must be a non-negative integer'),
+})
+
+/**
+ * Zod schema for validating PerformanceInfo objects
+ */
+export const PerformanceInfoSchema = z.object({
+  elapsedTime: z.string().min(1, 'ElapsedTime cannot be empty'),
+  endTime: z
+    .string()
+    .regex(
+      /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z?$/,
+      'EndTime must be in ISO date-time format'
+    ),
+  startTime: z
+    .string()
+    .regex(
+      /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z?$/,
+      'StartTime must be in ISO date-time format'
+    ),
+})
+
+/**
+ * Zod schema for validating SubmissionApiResponse structure
+ */
+export const SubmissionApiResponseSchema = z.object({
+  data: z.array(SubmissionSchema),
+  message: z.string(),
+  paging: PagingInfoSchema,
+  performance: PerformanceInfoSchema,
+  statusCode: z
+    .number()
+    .int()
+    .positive('StatusCode must be a positive integer'),
+  timestamp: z
+    .string()
+    .regex(
+      /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z?$/,
+      'Timestamp must be in ISO date-time format'
+    ),
+})
+
+/**
+ * Paging information interface for API responses
+ */
+export interface PagingInfo {
+  page: number
+  pageSize: number
+  totalPages: number
+  totalRecords: number
+}
+
+/**
+ * Performance information interface for API responses
+ */
+export interface PerformanceInfo {
+  elapsedTime: string
+  endTime: string
+  startTime: string
+}
+
+/**
+ * Complete API response interface for submissions following the standard backend pattern
+ * Includes data payload and metadata information
+ */
+export interface SubmissionApiResponse {
+  /** Array of submission objects */
+  data: Submission[]
+  /** Response message from the server */
+  message: string
+  /** Pagination information */
+  paging: PagingInfo
+  /** Performance metrics for the request */
+  performance: PerformanceInfo
+  /** HTTP status code */
+  statusCode: number
+  /** Response timestamp (ISO date-time format) */
+  timestamp: string
+}
+
 export interface PolicyContact {
   producerContactId: number
   firstName: string
