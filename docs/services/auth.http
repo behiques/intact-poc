@@ -1,0 +1,7 @@
+@UserSystemId = {{$processEnv USERNAME}}
+@baseUrl = https://microservices.dev.droot.dmn/security-api/api/security
+
+# @name login
+POST {{baseUrl}}/Login
+Content-Type: application/json
+usersystemid: {{UserSystemId}}
