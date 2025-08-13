@@ -1,0 +1,37 @@
+@UserSystemId = {{$processEnv USERNAME}}
+@baseUrl = https://sam-dev.azus.intactspecialty.net/submission-api/api/v1/submissions
+
+# @name login
+POST https://microservices.dev.droot.dmn/security-api/api/security/Login
+Content-Type: application/json
+usersystemid: {{UserSystemId}}
+
+
+###
+# @name PostSubmissionsEmails
+POST {{baseUrl}}/emails
+Authorization: Bearer {{login.response.body.$.token}}
+Content-Type: application/json
+
+{ 
+  "from": "dmercado@intactinsurance.com",
+  "emailStatusId": 2,
+  "externalId": "1",
+  "receivedDate": "2025-08-13T13:06:25.108Z",
+  "source": "Agile Brains Consulting",
+  "subject": "ABC Test"
+}
+
+
+###
+# @name GetSubmissionsEmails
+GET {{baseUrl}}/emails
+Authorization: Bearer {{login.response.body.$.token}}
+Content-Type: application/json
+
+
+###
+# @name GetSubmissionsWorklist
+GET {{baseUrl}}?AssignedToId=IXDRAKE
+Authorization: Bearer {{login.response.body.$.token}}
+Content-Type: application/json

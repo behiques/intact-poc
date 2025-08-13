@@ -1,0 +1,28 @@
+@UserSystemId = {{$processEnv USERNAME}}
+@baseUrl = https://sam-dev.azus.intactspecialty.net/common-api/api/v1/common
+
+# @name login
+POST https://microservices.dev.droot.dmn/security-api/api/security/Login
+Content-Type: application/json
+usersystemid: {{UserSystemId}}
+
+
+###
+# @name GetBusinessUnits
+GET {{baseUrl}}/businessunits
+Authorization: Bearer {{login.response.body.$.token}}
+Content-Type: application/json
+
+
+###
+# @name GetProducersByBusinessUnitId
+GET {{baseUrl}}/producers?BusinessUnitId=I
+Authorization: Bearer {{login.response.body.$.token}}
+Content-Type: application/json
+
+
+###
+# @name GetProducerContactsByProducerCode
+GET {{baseUrl}}/producers/4202660/contacts
+Authorization: Bearer {{login.response.body.$.token}}
+Content-Type: application/json
