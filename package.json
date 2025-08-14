@@ -21,6 +21,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@heroicons/react": "^2.2.0",
     "@tanstack/react-query": "^5.0.0",
     "@tanstack/react-table": "^8.21.3",
     "axios": "^1.11.0",
@@ -29,6 +30,7 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-select": "^5.10.2",
+    "solid": "link:@heroicons/react/20/solid",
     "tailwind-merge": "^2.0.0",
     "zod": "^3.22.0",
     "zustand": "^4.4.0"

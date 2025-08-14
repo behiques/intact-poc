@@ -8,7 +8,7 @@ export interface BusinessUnit {
   isActive: boolean
   isEligibleForAdmitted: boolean // Indicates if the business unit is eligible for admitted insurance
   name: string
-  url: string
+  url: string | null
 }
 
 export interface BusinessUnitApiResponse {

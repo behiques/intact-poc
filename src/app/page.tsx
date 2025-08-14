@@ -8,6 +8,7 @@ import {
   WorklistIcon,
 } from '@/features/dashboard/assets/Icons'
 import { useFinancialCloseDates } from '@/features/dashboard/hooks/useFinancialCloseDate'
+import { FinancialCloseDate } from '@/features/dashboard/types'
 import { LoaderSpinner } from '@/features/ui/LoaderSpinner'
 import Link from 'next/link'
 
@@ -22,7 +23,7 @@ const shortcuts: Shortcut[] = [
   { icon: <WorklistIcon />, href: '/my-worklist', label: 'My Worklist' },
   {
     icon: <SubmissionInboxIcon />,
-    href: '/submissions?tab=inbox',
+    href: '/submissions/inbox',
     label: 'Submissions Inbox',
   },
   {
@@ -88,7 +89,7 @@ export default function Dashboard() {
                   </td>
                 </tr>
               ) : (
-                financialDates?.map((row, i) => (
+                financialDates?.map((row: FinancialCloseDate, i: number) => (
                   <tr key={i} className="hover:bg-gray-50">
                     <td className="py-2 pr-4 text-gray-800">{row.month}</td>
                     <td className="py-2 pr-4 text-gray-800">{row.premium}</td>
