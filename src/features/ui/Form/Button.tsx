@@ -17,7 +17,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         ref={ref}
         type="button"
-        className="rounded-md bg-gray-300 px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs ring-0 hover:bg-gray-50 cursor-pointer"
+        className="cursor-pointer rounded-md bg-gray-300 px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs ring-0 hover:bg-gray-50"
       >
         {children}
       </button>
@@ -29,7 +29,7 @@ const Outline = ({ children }: { children: React.ReactNode }) => {
   return (
     <button
       type="button"
-      className="rounded border border-primary px-3 py-2 text-sm font-semibold text-primary shadow-xs ring-0 cursor-pointer"
+      className="border-primary text-primary cursor-pointer rounded border px-3 py-2 text-sm font-semibold shadow-xs ring-0"
     >
       {children}
     </button>

@@ -14,7 +14,7 @@ export const Alert = ({
 }
 
 const Success = ({ message }: { message: string }) => (
-  <div className="rounded-md bg-green-50 p-4 border-green-300 border">
+  <div className="rounded-md border border-green-300 bg-green-50 p-4">
     <div className="flex">
       <div className="shrink-0">
         <CheckCircleIcon aria-hidden="true" className="size-5 text-green-400" />

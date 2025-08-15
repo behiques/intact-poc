@@ -22,20 +22,20 @@ export const SetupSubmission = () => {
   return (
     <form
       onSubmit={handleSubmit((data) => console.log(data))}
-      className="flex flex-col w-full space-y-6"
+      className="flex w-full flex-col space-y-6"
     >
       <FormGroup headerText="Account 6235731">
-        <ul className="grid grid-cols-2 text-sm text-gray-700 space-y-4">
+        <ul className="grid grid-cols-2 space-y-4 text-sm text-gray-700">
           <li className="flex">
-            <UserIcon width={20} className="fill-gray-300 mr-2" />
+            <UserIcon width={20} className="mr-2 fill-gray-300" />
             bier demo 7.8.25{' '}
           </li>
           <li className="flex items-center">
-            <BriefcaseIcon width={20} className="fill-gray-300 mr-2" />{' '}
+            <BriefcaseIcon width={20} className="mr-2 fill-gray-300" />{' '}
             Financial Institutions
           </li>
           <li className="flex items-start">
-            <HomeIcon width={20} className="fill-gray-300 mr-2" />
+            <HomeIcon width={20} className="mr-2 fill-gray-300" />
             1051 TEXAS ST, SALEM, Virginia, 241535402
           </li>
         </ul>
@@ -84,7 +84,7 @@ export const SetupSubmission = () => {
       </FormGroup>
 
       <FormGroup headerText="Assignments & Contacts">
-        <h2 className="font-bold text-xl">Producer Contacts</h2>
+        <h2 className="text-xl font-bold">Producer Contacts</h2>
 
         <Controller
           control={control}
@@ -175,7 +175,7 @@ export const SetupSubmission = () => {
         />
 
         <Button style="outline">Add Contacts</Button>
-        <h3 className="font-bold text-xl mb-2">Additional Custom Contacts</h3>
+        <h3 className="mb-2 text-xl font-bold">Additional Custom Contacts</h3>
         <Button style="outline">Add Custom Contacts</Button>
 
         <Field.Input

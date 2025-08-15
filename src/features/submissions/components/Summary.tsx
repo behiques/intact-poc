@@ -5,21 +5,21 @@ import { BriefcaseIcon, HomeIcon, UserIcon } from '@heroicons/react/20/solid'
 
 export const Summary = () => {
   return (
-    <div className="flex flex-col w-full space-y-6">
+    <div className="flex w-full flex-col space-y-6">
       <Alert message="Submission complete" type="success" />
 
       <FormGroup headerText="Account 6235731">
-        <ul className="grid grid-cols-2 text-sm text-gray-700 space-y-4">
+        <ul className="grid grid-cols-2 space-y-4 text-sm text-gray-700">
           <li className="flex">
-            <UserIcon width={20} className="fill-gray-300 mr-2" />
+            <UserIcon width={20} className="mr-2 fill-gray-300" />
             0403698 Integro USA Inc.
           </li>
           <li className="flex items-center">
-            <BriefcaseIcon width={20} className="fill-gray-300 mr-2" />{' '}
+            <BriefcaseIcon width={20} className="mr-2 fill-gray-300" />{' '}
             Financial Institutions
           </li>
           <li className="flex items-start">
-            <HomeIcon width={20} className="fill-gray-300 mr-2" /> bier demo
+            <HomeIcon width={20} className="mr-2 fill-gray-300" /> bier demo
             7.8.25
             <br />
             1051 TEXAS ST, SALEM, Virginia, 241535402
@@ -29,7 +29,7 @@ export const Summary = () => {
 
       <FormGroup headerText="Summary">
         <div className="relative">
-          <div className="absolute right-0 top-0 flex space-x-2">
+          <div className="absolute top-0 right-0 flex space-x-2">
             <Button type="outline">Send to Processing</Button>
             <Button type="outline">Send to Processing</Button>
           </div>

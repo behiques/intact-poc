@@ -1,0 +1,51 @@
+@UserSystemId = {{$processEnv USERNAME}}
+@baseUrl = https://sam-dev.azus.intactspecialty.net
+
+# @name login
+POST https://microservices.dev.droot.dmn/security-api/api/security/Login
+Content-Type: application/json
+usersystemid: {{UserSystemId}}
+
+
+###
+# @name CreateAccount
+POST {{baseUrl}}/t/account-api/api/accountmanagement/v2/accounts
+Authorization: Bearer {{login.response.body.$.token}}
+Content-Type: application/json
+
+{
+  "defaultLegalEntityId": "5",
+  "sicCode": "9999",
+  "naicsCode": "999999",
+  "businessUnit": "I",
+  "producerCode": "3104572",
+  "address": {
+    "street": "123 Main St",
+    "city": "Queens",
+    "state": "NY",
+    "zip": "10001",
+    "country": "US",
+    "mailStop": "Attn ABC"
+  },
+  "doingBusinessAs": [
+    "Agile Brains Consulting",
+    "ABC"
+  ],
+  "formerlyKnownAs": [
+    "Agile Brains Consulting, LLC",
+    "ABC, LLC"
+  ],
+  "businessDescription": "Consulting company",
+  "websiteUrl": "https://agilebrainsconsulting.com",
+  "fein": "123456789",
+  "divisionId": "002",
+  "customerId": "1981596",
+  "name": {
+    "name1": "ABC Test",
+    "name2": "Agile Brains Consulting"
+  },
+  "riskCode": "1",
+  "description": "Acc description",
+  "dunsNumber": "",
+  "territory": "002"
+}

@@ -21,7 +21,7 @@ export const RadioField = React.forwardRef<
   return (
     <fieldset>
       <div>
-        <label className="group relative flex rounded-lg border border-gray-300 bg-white p-4 has-checked:outline-2 has-checked:-outline-offset-2 has-checked:bg-primary-lightest has-checked:outline-primary has-focus-visible:outline-3 has-focus-visible:-outline-offset-1 has-disabled:border-gray-400 has-disabled:bg-gray-200 has-disabled:opacity-25">
+        <label className="group has-checked:bg-primary-lightest has-checked:outline-primary relative flex rounded-lg border border-gray-300 bg-white p-4 has-checked:outline-2 has-checked:-outline-offset-2 has-focus-visible:outline-3 has-focus-visible:-outline-offset-1 has-disabled:border-gray-400 has-disabled:bg-gray-200 has-disabled:opacity-25">
           <input
             ref={ref}
             id={id}
@@ -31,7 +31,7 @@ export const RadioField = React.forwardRef<
           />
           <CheckCircleIcon
             aria-hidden="true"
-            className="mr-2 invisible size-5 text-primary group-has-checked:visible"
+            className="text-primary invisible mr-2 size-5 group-has-checked:visible"
           />
 
           <div className="flex-1">
