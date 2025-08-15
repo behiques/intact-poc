@@ -1,7 +1,7 @@
-import type { TokenResponse, AuthError } from '../types'
+import type { TokenResponse, AuthError } from '../types/index'
 
 /**
- * Token API Functions
+ * Authentication API Functions
  *
  * Core API functions for token retrieval and management
  * following the established patterns from the codebase.

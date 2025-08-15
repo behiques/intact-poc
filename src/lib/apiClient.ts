@@ -7,8 +7,8 @@ import axios, {
   CancelTokenSource,
   isAxiosError,
 } from 'axios'
-import { useTokenStore } from '@/features/common/stores/useTokenStore'
-import type { AuthError } from '@/features/common/types'
+import { useTokenStore } from '@/features/auth/stores/useTokenStore'
+import type { AuthError } from '@/features/auth/types'
 
 // Extend axios request config to include our custom properties
 declare module 'axios' {

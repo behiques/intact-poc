@@ -3,9 +3,9 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { useState, useEffect } from 'react'
-import { useToken } from '@/features/common/hooks/useToken'
-import { useTokenStore } from '@/features/common/stores/useTokenStore'
-import type { AuthError } from '@/features/common/types'
+import { useToken } from '@/features/auth/hooks/useToken'
+import { useTokenStore } from '@/features/auth/stores/useTokenStore'
+import type { AuthError } from '@/features/auth/types'
 import { AxiosError } from 'axios'
 
 export function Providers({ children }: { children: React.ReactNode }) {

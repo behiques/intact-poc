@@ -1,5 +1,5 @@
 import type { TokenProvider } from '@/lib/api/types'
-import { useTokenStore } from '@/features/common/stores/useTokenStore'
+import { useTokenStore } from '@/features/auth/stores/useTokenStore'
 
 /**
  * Real Token Provider that integrates with the existing token store
