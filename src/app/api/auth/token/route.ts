@@ -19,16 +19,26 @@ interface ErrorResponse {
 }
 
 export async function POST(): Promise<NextResponse> {
+  console.log('🔐 Token API route called - POST /api/auth/token')
+
   try {
-    // Get environment variables (server-side only)
-    const authTokenApiUrl = process.env.NEXT_PUBLIC_AUTH_TOKEN_API_URL
-    const userSystemId = process.env.NEXT_PUBLIC_USER_SYSTEM_ID
+    // Get environment variables (server-side only - no NEXT_PUBLIC_ needed)
+    const authTokenApiUrl =
+      process.env.AUTH_TOKEN_API_URL ||
+      process.env.NEXT_PUBLIC_AUTH_TOKEN_API_URL
+    const userSystemId =
+      process.env.USER_SYSTEM_ID || process.env.NEXT_PUBLIC_USER_SYSTEM_ID
+
+    console.log('🌍 Environment check:', {
+      authTokenApiUrl: authTokenApiUrl ? '✅ Set' : '❌ Missing',
+      userSystemId: userSystemId ? '✅ Set' : '❌ Missing',
+      nodeEnv: process.env.NODE_ENV,
+      timestamp: new Date().toISOString(),
+    })
 
     // Validate required environment variables
     if (!authTokenApiUrl) {
-      console.error(
-        'Missing NEXT_PUBLIC_AUTH_TOKEN_API_URL environment variable'
-      )
+      console.error('❌ Missing AUTH_TOKEN_API_URL environment variable')
       return NextResponse.json(
         {
           error: 'CONFIGURATION_ERROR',
@@ -40,7 +50,7 @@ export async function POST(): Promise<NextResponse> {
     }
 
     if (!userSystemId) {
-      console.error('Missing NEXT_PUBLIC_USER_SYSTEM_ID environment variable')
+      console.error('❌ Missing USER_SYSTEM_ID environment variable')
       return NextResponse.json(
         {
           error: 'CONFIGURATION_ERROR',
