@@ -23,11 +23,8 @@ export async function POST(): Promise<NextResponse> {
 
   try {
     // Get environment variables (server-side only - no NEXT_PUBLIC_ needed)
-    const authTokenApiUrl =
-      process.env.AUTH_TOKEN_API_URL ||
-      process.env.NEXT_PUBLIC_AUTH_TOKEN_API_URL
-    const userSystemId =
-      process.env.USER_SYSTEM_ID || process.env.NEXT_PUBLIC_USER_SYSTEM_ID
+    const authTokenApiUrl = process.env.AUTH_TOKEN_API_URL
+    const userSystemId = process.env.USER_SYSTEM_ID || process.env.USERNAME
 
     console.log('🌍 Environment check:', {
       authTokenApiUrl: authTokenApiUrl ? '✅ Set' : '❌ Missing',
