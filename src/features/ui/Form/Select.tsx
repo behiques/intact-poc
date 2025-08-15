@@ -12,6 +12,9 @@ export type SelectOption = {
 }
 
 type SelectProps = ComponentProps<typeof ReactSelect> & {
+  label?: string
+  required?: boolean
+  optional?: boolean
   feedback?: string
   isValid?: boolean
   isInvalid?: boolean
@@ -20,26 +23,47 @@ type SelectProps = ComponentProps<typeof ReactSelect> & {
 }
 
 export const SelectField: React.FC<SelectProps> = ({
+  label,
+  required,
+  optional,
   isClearable = true,
   isInvalid,
   ...props
 }) => (
-  <ReactSelect
-    className={isInvalid ? 'error-picker-class' : ''}
-    isClearable={isClearable}
-    styles={{
-      control: (baseStyles, state) => ({
-        ...baseStyles,
-        marginTop: 3,
-        paddingTop: 3,
-        paddingBottom: 3,
-        borderColor: state.isFocused ? '#007b87' : '#007b87',
-      }),
-      dropdownIndicator: (baseStyles) => ({
-        ...baseStyles,
-        color: '#007b87',
-      }),
-    }}
-    {...props}
-  />
+  <div className="grow">
+    <label
+      htmlFor="email"
+      className="relative block text-sm/6 font-bold text-gray-900"
+    >
+      {label}
+      {required && (
+        <small className="absolute ml-1 text-xl font-bold text-red-600">
+          *
+        </small>
+      )}
+      {optional && (
+        <small className="ml-1 text-xs font-bold text-gray-400">
+          (optional)
+        </small>
+      )}
+    </label>
+    <ReactSelect
+      className={isInvalid ? 'error-picker-class' : ''}
+      isClearable={isClearable}
+      styles={{
+        control: (baseStyles, state) => ({
+          ...baseStyles,
+          marginTop: 3,
+          paddingTop: 3,
+          paddingBottom: 3,
+          borderColor: state.isFocused ? '#007b87' : '#007b87',
+        }),
+        dropdownIndicator: (baseStyles) => ({
+          ...baseStyles,
+          color: '#007b87',
+        }),
+      }}
+      {...props}
+    />
+  </div>
 )

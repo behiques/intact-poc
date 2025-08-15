@@ -69,24 +69,16 @@ export const Header = () => {
 
         <nav className="px-4">
           <ul className="flex space-x-6">
-            {topLinks.map((link, index) => {
-              const isActive = (href: string) => pathname === href
-
-              return (
-                <li key={index}>
-                  <Link
-                    className={`text-primary flex items-center space-x-1 border-b-[6px] py-2 text-xs ${
-                      isActive(link.href)
-                        ? 'border-primary-active-tab'
-                        : 'text-primary-500 border-transparent'
-                    }`}
-                    href={link.href as Parameters<typeof Link>[0]['href']}
-                  >
-                    {link.icon} <span>{link.label}</span>
-                  </Link>
-                </li>
-              )
-            })}
+            {topLinks.map((link, index) => (
+              <li key={index}>
+                <Link
+                  className={`text-primary text-primary-500 flex items-center space-x-1 border-b-[6px] border-transparent py-2 text-xs`}
+                  href={link.href as Parameters<typeof Link>[0]['href']}
+                >
+                  {link.icon} <span>{link.label}</span>
+                </Link>
+              </li>
+            ))}
           </ul>
         </nav>
       </div>
