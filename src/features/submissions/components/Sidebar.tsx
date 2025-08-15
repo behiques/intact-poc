@@ -16,7 +16,7 @@ export const Sidebar = () => {
   const { steps } = context
 
   return (
-    <nav aria-label="Progress" className="bg-white h-screen">
+    <nav aria-label="Progress" className="h-screen bg-white">
       <ol role="list" className="overflow-hidden">
         {steps?.map((step: Step, stepIdx: number) => (
           <li
@@ -50,7 +50,7 @@ export const Sidebar = () => {
                     <span className="text-sm font-bold uppercase">
                       {step.name}
                     </span>
-                    <span className="text-sm text-gray-500 font-bold">
+                    <span className="text-sm font-bold text-gray-500">
                       {step.description}
                     </span>
                   </span>
@@ -75,7 +75,7 @@ export const Sidebar = () => {
                     </span>
                   </span>
                   <span className="ml-4 flex min-w-0 flex-col">
-                    <span className="text-sm font-bold uppercase text-teal-600">
+                    <span className="text-sm font-bold text-teal-600 uppercase">
                       {step.name}
                     </span>
                     <span className="text-sm text-gray-500">
@@ -102,7 +102,7 @@ export const Sidebar = () => {
                     </span>
                   </span>
                   <span className="ml-4 flex min-w-0 flex-col">
-                    <span className="text-sm font-bold uppercase text-gray-500">
+                    <span className="text-sm font-bold text-gray-500 uppercase">
                       {step.name}
                     </span>
                     <span className="text-sm text-gray-500">

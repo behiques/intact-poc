@@ -5,10 +5,10 @@ export default function Example({ children }: { children: React.ReactNode }) {
   return (
     <SubmissionProvider>
       <section className="flex h-full pb-20">
-        <aside className="w-3xs bg-white p-7 h-full">
+        <aside className="h-full w-3xs bg-white p-7">
           <Sidebar />
         </aside>
-        <main className="p-7 w-full">{children}</main>
+        <main className="w-full p-7">{children}</main>
       </section>
     </SubmissionProvider>
   )

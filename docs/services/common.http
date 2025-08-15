@@ -29,3 +29,21 @@ Content-Type: application/json
 
 
 ###
+# @name GetCustomersList
+GET {{baseUrl}}/customers?BusinessUnitId=I&CustomerName=Chris
+Authorization: Bearer {{login.response.body.$.token}}
+Content-Type: application/json
+
+
+###
+# @name GetSICcodes
+GET {{baseUrl}}/siccodes
+Authorization: Bearer {{login.response.body.$.token}}
+Content-Type: application/json
+
+
+###
+# @name GetNaicsCodesBySICcode
+GET {{baseUrl}}/siccodes/9999/naicscodes
+Authorization: Bearer {{login.response.body.$.token}}
+Content-Type: application/json

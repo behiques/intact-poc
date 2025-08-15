@@ -24,12 +24,12 @@ export const InputField = ({
       <label className="block text-sm/6 font-bold text-gray-900 relative">
         {label}
         {required && (
-          <small className="text-red-600 font-bold text-xl ml-1 absolute">
+          <small className="absolute ml-1 text-xl font-bold text-red-600">
             *
           </small>
         )}
         {optional && (
-          <small className="text-gray-400 font-bold text-xs ml-1">
+          <small className="ml-1 text-xs font-bold text-gray-400">
             (optional)
           </small>
         )}

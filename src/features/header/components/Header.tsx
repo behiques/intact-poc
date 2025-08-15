@@ -72,7 +72,7 @@ export const Header = () => {
             {topLinks.map((link, index) => (
               <li key={index}>
                 <Link
-                  className={`text-primary flex items-center space-x-1 border-b-[6px] py-2 text-xs text-primary-500 border-transparent`}
+                  className={`text-primary text-primary-500 flex items-center space-x-1 border-b-[6px] border-transparent py-2 text-xs`}
                   href={link.href as Parameters<typeof Link>[0]['href']}
                 >
                   {link.icon} <span>{link.label}</span>

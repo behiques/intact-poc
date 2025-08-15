@@ -16,7 +16,7 @@ Content-Type: application/json
 
 { 
   "from": "dmercado@intactinsurance.com",
-  "emailStatusId": 2,
+  "emailStatusId": 1,
   "externalId": "AAMkADUzZWVlZTQ1LTJiNjAtNDcwNi04NWE0LWY0MTM1YTZlMzEwZABGAAAAAABaOnPV4xYAQpRPU8_vyxj2BwCodTkqqNXVQLAWd286sJYlAABb3YvTAACodTkqqNXVQLAWd286sJYlAAG5DM6QAAA=",
   "receivedDate": "2025-08-13T13:06:25.108Z",
   "source": "Agile Brains Consulting",
@@ -31,6 +31,23 @@ GET {{baseUrl}}/emails
 Authorization: Bearer {{login.response.body.$.token}}
 Content-Type: application/json
 
+###
+# @name PostSubmission
+# http://localhost:3000/submissions/inbox
+POST {{baseUrl}}
+Authorization: Bearer {{login.response.body.$.token}}
+Content-Type: application/json
+
+{
+  "assignedToId": "DXMERCA",
+  "businessUnitId": "I",
+  "comment": "Test comment",
+  "emailId": 0,
+  "externalId": "AAMkADUzZWVlZTQ1LTJiNjAtNDcwNi04NWE0LWY0MTM1YTZlMzEwZABGAAAAAABaOnPV4xYAQpRPU8_vyxj2BwCodTkqqNXVQLAWd286sJYlAABb3YvTAACodTkqqNXVQLAWd286sJYlAAG5DM6QAAA=",
+  "source": "Agile Brains Consulting",
+  "submissionStatusId": 0,
+  "accountId": 0
+}
 
 ###
 # @name GetSubmissionsWorklist
