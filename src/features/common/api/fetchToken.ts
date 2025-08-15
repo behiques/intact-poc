@@ -1,4 +1,3 @@
-import { tokenConfig } from '../utils/config'
 import type { TokenResponse, AuthError } from '../types'
 
 /**
@@ -32,11 +31,11 @@ const createAuthError = (
  */
 export const retrieveToken = async (): Promise<TokenResponse> => {
   try {
-    const response = await fetch(tokenConfig.authTokenApiUrl, {
+    // Use the Next.js API route proxy to avoid CORS issues
+    const response = await fetch('/api/auth/token', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        usersystemid: tokenConfig.userSystemId,
       },
     })
 

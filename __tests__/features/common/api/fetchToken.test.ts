@@ -1,13 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { retrieveToken } from '@/features/common/api/fetchToken'
-import { env } from '@/utils/env'
-
-// Mock the env utility
-vi.mock('@/utils/env', () => ({
-  env: {
-    BACKEND_API_URL: 'https://api.test.com',
-  },
-}))
 
 // Mock fetch globally
 const mockFetch = vi.fn()
@@ -34,15 +26,12 @@ describe('fetchToken', () => {
 
       const result = await retrieveToken()
 
-      expect(mockFetch).toHaveBeenCalledWith(
-        `${env.BACKEND_API_URL}/api/token`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      )
+      expect(mockFetch).toHaveBeenCalledWith('/api/auth/token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
       expect(result.token).toBe(mockToken)
     })
 

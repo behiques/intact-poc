@@ -7,7 +7,6 @@ import axios, {
   CancelTokenSource,
   isAxiosError,
 } from 'axios'
-import { env } from '@/utils/env'
 import { useTokenStore } from '@/features/common/stores/useTokenStore'
 import type { AuthError } from '@/features/common/types'
 
@@ -516,12 +515,12 @@ export class ApiClient {
  * Uses BACKEND_API_URL and includes automatic token attachment
  */
 export const backendApiClient = new ApiClient({
-  baseUrl: env.BACKEND_API_URL,
+  baseUrl: process.env.NEXT_PUBLIC_BACKEND_API_URL || '',
   requiresAuth: true,
   defaultHeaders: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
-    usersystemid: env.USER_SYSTEM_ID,
+    usersystemid: process.env.NEXT_PUBLIC_USER_SYSTEM_ID || '',
   },
 })
 
@@ -530,7 +529,7 @@ export const backendApiClient = new ApiClient({
  * Uses NEXT_PUBLIC_API_URL and doesn't require authentication
  */
 export const localApiClient = new ApiClient({
-  baseUrl: env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api',
+  baseUrl: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api',
   requiresAuth: false,
 })
 

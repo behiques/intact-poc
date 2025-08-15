@@ -135,11 +135,11 @@ export interface UseAuthenticatedApiReturn {
 // Environment Configuration Types
 export interface TokenConfig {
   /** Authorization API URL */
-  authTokenApiUrl: string
+  authTokenApiUrl: string | undefined
   /** Backend API URL */
-  backendApiUrl: string
+  backendApiUrl: string | undefined
   /** User system identifier */
-  userSystemId: string
+  userSystemId: string | undefined
 }
 
 // Constants
