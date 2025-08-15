@@ -10,7 +10,7 @@ import {
   Producer,
 } from '../types'
 import { useProducers } from '../hooks/useProducers'
-import { useContacts } from '../hooks/useContacts'
+import { useContacts } from '../hooks/useProducerContacts'
 
 export const AccountSearchForm = ({ onSearch }: AccountSearchFormProps) => {
   const {

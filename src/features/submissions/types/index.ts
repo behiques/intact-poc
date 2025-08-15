@@ -64,6 +64,16 @@ export type SICApiResponse = {
   data: SIC[]
 }
 
+export type NAIC = {
+  sicCode: string
+  naicsCode: string
+  description: string
+}
+
+export type NAICApiResponse = {
+  data: NAIC[]
+}
+
 export type LegalEntity = {
   value: string
   label: string

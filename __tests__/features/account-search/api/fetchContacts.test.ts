@@ -3,7 +3,7 @@ import {
   fetchContacts,
   createContactsQueryKey,
   useContactsQuery,
-} from '../../../../src/features/account-search/api/fetchContacts'
+} from '../../../../src/features/account-search/api/fetchProducerContacts'
 import {
   ContactsQueryParams,
   ContactApiResponse,

@@ -1,4 +1,4 @@
-import { useContactsQuery } from '../api/fetchContacts'
+import { useProducerContactsQuery } from '../api/fetchProducerContacts'
 import { ContactsQueryParams } from '../types'
 
 /**
@@ -35,7 +35,7 @@ export const useContacts = (
   params?: ContactsQueryParams
 ) => {
   const { data, isLoading, error, refetch, isError, isPending, isSuccess } =
-    useContactsQuery(producerCode, params)
+    useProducerContactsQuery(producerCode, params)
 
   return {
     /** Array of contacts matching the query parameters */

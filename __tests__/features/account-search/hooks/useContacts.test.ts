@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { renderHook, waitFor } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import React from 'react'
-import { useContacts } from '../../../../src/features/account-search/hooks/useContacts'
+import { useContacts } from '../../../../src/features/account-search/hooks/useProducerContacts'
 import {
   ContactsQueryParams,
   Contact,

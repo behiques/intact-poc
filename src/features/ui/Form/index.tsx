@@ -3,7 +3,7 @@ import { InputField } from './Input'
 // import { Label } from "./Label";
 // import { Textarea } from "./Textarea";
 // import { DatePicker } from "./DatePicker";
-import { CheckboxField } from './Checkbox'
+import { Checkbox } from './Checkbox'
 import { RadioField } from './Radio'
 import { SelectField } from './Select'
 export type { SelectOption } from './Select'
@@ -15,7 +15,7 @@ export interface FieldComposition extends React.HTMLAttributes<HTMLDivElement> {
   //   Label: typeof Label;
   Input: typeof InputField
   //   Textarea: typeof Textarea;
-  Checkbox: typeof CheckboxField
+  Checkbox: typeof Checkbox
   Radio: typeof RadioField
   Select: typeof SelectField
   //   Phone: typeof Phone;
@@ -28,6 +28,7 @@ export const Field: React.FC<{
 }> &
   FieldComposition = ({ children, className = 'mb-5.5', ...props }) => {
   const id = useId()
+  console.log({ firstId: id })
 
   return (
     <FieldContext.Provider value={id}>
@@ -41,7 +42,7 @@ export const Field: React.FC<{
 // Field.Label = Label;
 Field.Input = InputField
 // Field.Textarea = Textarea;
-Field.Checkbox = CheckboxField
+Field.Checkbox = Checkbox
 Field.Radio = RadioField
 Field.Select = SelectField
 // Field.Phone = Phone;

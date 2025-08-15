@@ -13,9 +13,11 @@ import {
   getMockQuickLinks,
   getMockSubmissionsInbox,
   getMockSubmissionsWorklist,
+  getMockSICs,
+  getMockLegalEntities,
+  getMockCustomers,
+  getMockNAICsBySIC,
 } from '@/mocks/data'
-import { getMockSICs } from '@/mocks/data/sics.mock'
-import { getMockLegalEntities } from '@/mocks/data/legal-entities.mock'
 
 /**
  * Mock API Client for development and testing
@@ -96,6 +98,14 @@ export class MockApiClient implements ApiClientInterface {
       return getMockBusinessUnits(params) as T
     }
 
+    // Customers endpoints
+    if (
+      endpoint === '/common-api/api/v1/common/customers' &&
+      method === 'GET'
+    ) {
+      return getMockCustomers() as T
+    }
+
     if (
       endpoint.match(
         /^\/common-api\/api\/v1\/common\/businessunits\/[^/]+\/producers$/
@@ -131,8 +141,18 @@ export class MockApiClient implements ApiClientInterface {
     }
 
     // SICs endpoints
-    if (endpoint === '/sics' && method === 'GET') {
+    if (endpoint === '/siccodes' && method === 'GET') {
       return getMockSICs() as T
+    }
+
+    // NAICs by SIC code endpoint
+    if (
+      endpoint.match(
+        /^\/common-api\/api\/v1\/common\/siccodes\/[^/]+\/naicscodes$/
+      ) &&
+      method === 'GET'
+    ) {
+      return getMockNAICsBySIC() as T
     }
 
     // Legal Entities endpoints

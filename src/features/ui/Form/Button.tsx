@@ -2,14 +2,16 @@
 
 import React from 'react'
 
-type ButtonProps = {
-  children: React.ReactNode
-  style?: 'solid' | 'outline'
+export interface ButtonProps extends React.ComponentPropsWithoutRef<'button'> {
+  buttonStyle?: 'solid' | 'outline'
+  intent?: 'primary' | 'secondary' | 'ghost' | 'warning'
+  size?: 'lg' | 'sm'
+  block?: boolean
 }
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ children, style = 'solid' }, ref) => {
-    if (style === 'outline') {
+  ({ children, buttonStyle = 'solid' }, ref) => {
+    if (buttonStyle === 'outline') {
       return <Outline>{children}</Outline>
     }
 

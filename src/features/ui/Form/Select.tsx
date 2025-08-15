@@ -2,8 +2,12 @@
 
 import { ComponentProps } from 'react'
 import dynamic from 'next/dynamic'
+import { Feedback } from './Feedback'
 
 const ReactSelect = dynamic(() => import('react-select'), { ssr: false })
+const ReactAsyncSelect = dynamic(() => import('react-select/async'), {
+  ssr: false,
+})
 
 export type SelectOption = {
   value: string
@@ -12,6 +16,7 @@ export type SelectOption = {
 }
 
 type SelectProps = ComponentProps<typeof ReactSelect> & {
+  isAsync?: boolean
   label?: string
   required?: boolean
   optional?: boolean
@@ -23,11 +28,13 @@ type SelectProps = ComponentProps<typeof ReactSelect> & {
 }
 
 export const SelectField: React.FC<SelectProps> = ({
+  isAsync,
   label,
   required,
   optional,
   isClearable = true,
   isInvalid,
+  feedback,
   ...props
 }) => (
   <div className="grow">
@@ -47,23 +54,29 @@ export const SelectField: React.FC<SelectProps> = ({
         </small>
       )}
     </label>
-    <ReactSelect
-      className={isInvalid ? 'error-picker-class' : ''}
-      isClearable={isClearable}
-      styles={{
-        control: (baseStyles, state) => ({
-          ...baseStyles,
-          marginTop: 3,
-          paddingTop: 3,
-          paddingBottom: 3,
-          borderColor: state.isFocused ? '#007b87' : '#007b87',
-        }),
-        dropdownIndicator: (baseStyles) => ({
-          ...baseStyles,
-          color: '#007b87',
-        }),
-      }}
-      {...props}
-    />
+    {isAsync ? (
+      <ReactAsyncSelect {...props} />
+    ) : (
+      <ReactSelect
+        className={isInvalid ? 'error-picker-class' : ''}
+        isClearable={isClearable}
+        styles={{
+          control: (baseStyles, state) => ({
+            ...baseStyles,
+            marginTop: 3,
+            paddingTop: 3,
+            paddingBottom: 3,
+            borderColor: state.isFocused ? '#007b87' : '#007b87',
+          }),
+          dropdownIndicator: (baseStyles) => ({
+            ...baseStyles,
+            color: '#007b87',
+          }),
+        }}
+        {...props}
+      />
+    )}
+
+    <Feedback isInvalid={isInvalid} feedback={feedback} />
   </div>
 )

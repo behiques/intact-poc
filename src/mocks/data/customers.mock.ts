@@ -1,7 +1,7 @@
 import {
   Customer,
-  CustomerSearchApiResponse,
-} from '@/features/submissions/types'
+  CustomersApiResponse,
+} from '@/features/common/types/customer'
 
 /**
  * Mock data for customer search API response
@@ -150,7 +150,7 @@ export const mockCustomersData: Customer[] = [
  * Helper to get mock customer search API response
  * This data is used to simulate the response from the customer search API endpoint. API response
  */
-export const getMockCustomers = (): CustomerSearchApiResponse => {
+export const getMockCustomers = (): CustomersApiResponse => {
   return {
     data: mockCustomersData,
   }

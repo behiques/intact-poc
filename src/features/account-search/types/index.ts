@@ -363,9 +363,6 @@ export interface PolicyContact {
   email?: string
   phone?: string
 }
-export interface PolicyContactApiResponse {
-  data: PolicyContact[]
-}
 
 /**
  * Contact interface for the new contacts API
@@ -645,6 +642,44 @@ export type AccountSearchFormData = {
   state?: string
   street?: string
   zip?: string
+}
+
+export type CreateAccountFormData = {
+  description?: string
+  altDescription?: string
+  businessUnit?: string
+  address?: {
+    mailStop?: string
+    street?: string
+    city?: string
+    state?: string
+    zip?: string
+    country?: string
+  }
+  name?: {
+    name1?: string
+    name2?: string
+  }
+  fein?: string
+  underwriterId?: string
+  divisionId?: number | string
+  producerCode?: string
+  businessDescription?: string
+  defaultLegalEntityId?: number
+  defaultLegalEntityOtherDescription?: string
+  websiteUrl?: string
+  underwriterAssistantId?: string
+  externalId?: string
+  sicCode?: string
+  naicsCode?: string
+  riskCode?: string
+  doingBusinessAs?: string[]
+  formerlyKnownAs?: string[]
+  subsidiaries?: string[]
+  locked?: boolean
+  dunsNumber?: string
+  customerId?: number
+  territory?: string
 }
 
 /**

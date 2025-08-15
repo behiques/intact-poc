@@ -32,3 +32,5 @@ export {
   getMockLegalEntities,
   mockLegalEntitiesData,
 } from './legal-entities.mock'
+export { getMockCustomers } from '@/mocks/data/customers.mock'
+export { getMockNAICsBySIC } from '@/mocks/data/naics.mock'

@@ -9,7 +9,7 @@ import { apiClient } from '@/lib/api'
 /**
  * Constructs the contacts endpoint URL based on environment and producer code
  */
-const getContactsEndpoint = (producerCode: string): string => {
+const getProducerContactsEndpoint = (producerCode: string): string => {
   // Use the new backend endpoint structure with producerCode path parameter
   return `/common-api/api/v1/common/producers/${producerCode}/contacts`
 }
@@ -33,7 +33,7 @@ const validateQueryParams = (
 /**
  * Creates a query key for React Query caching based on producerCode and parameters
  */
-export const createContactsQueryKey = (
+export const createProducerContactsQueryKey = (
   producerCode: string,
   params?: ContactsQueryParams
 ): string[] => {
@@ -62,7 +62,7 @@ export const createContactsQueryKey = (
  * Fetches contacts from the API with producerCode and optional query parameters
  * Enhanced to support ProducerContactId and Fields parameters
  */
-export const fetchContacts = async (
+export const fetchProducerContacts = async (
   producerCode: string,
   params?: ContactsQueryParams
 ): Promise<ContactApiResponse> => {
@@ -81,7 +81,7 @@ export const fetchContacts = async (
   const validatedParams = validateQueryParams(params)
 
   // Get the appropriate endpoint
-  const endpoint = getContactsEndpoint(producerCode.trim())
+  const endpoint = getProducerContactsEndpoint(producerCode.trim())
 
   try {
     // Make the API request with optional query parameters
@@ -123,13 +123,13 @@ export const fetchContacts = async (
  * React Query hook for fetching contacts with producerCode and optional parameters
  * Includes proper caching, error handling, and loading states
  */
-export const useContactsQuery = (
+export const useProducerContactsQuery = (
   producerCode: string,
   params?: ContactsQueryParams
 ) => {
   return useQuery({
-    queryKey: createContactsQueryKey(producerCode, params),
-    queryFn: () => fetchContacts(producerCode, params),
+    queryKey: createProducerContactsQueryKey(producerCode, params),
+    queryFn: () => fetchProducerContacts(producerCode, params),
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes
     // Only enable the query if producerCode is provided

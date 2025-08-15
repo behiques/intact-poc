@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query'
-import { TerritoryApiResponse } from '../types'
+import { SICApiResponse } from '../types'
 import { apiClient } from '@/lib/api'
 
 // REST API call - bulletproof pattern keeps API logic in feature/api folder
-export const fetchSICs = async (): Promise<TerritoryApiResponse> => {
+export const fetchSICs = async (): Promise<SICApiResponse> => {
   // Direct call to backend API (or mock based on environment)
-  const response = await apiClient.get<TerritoryApiResponse>('/sics')
+  const response = await apiClient.get<SICApiResponse>('/siccodes')
 
   return response.data
 }
