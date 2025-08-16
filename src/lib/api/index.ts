@@ -38,7 +38,7 @@ const createApiClient = (): ApiClientInterface => {
 
   console.log('🌐 Using Real API Client')
   return new ApiClient({
-    baseUrl: process.env.NEXT_PUBLIC_BACKEND_API_URL || '',
+    baseUrl: process.env.NEXT_PUBLIC_API_URL || '',
     tokenProvider: realTokenProvider,
   })
 }

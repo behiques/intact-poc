@@ -1,0 +1,16 @@
+@UserSystemId = {{$processEnv USERNAME}}
+@baseUrl = https://sam-dev.azus.intactspecialty.net
+
+# @name login
+POST https://microservices.dev.droot.dmn/security-api/api/security/Login
+Content-Type: application/json
+usersystemid: {{UserSystemId}}
+
+
+
+###
+# @name GetAccountSearch
+GET {{baseUrl}}/samapi/api/clearance/v2/search?AccountName=Chris
+Authorization: Bearer {{login.response.body.$.token}}
+Content-Type: application/json
+

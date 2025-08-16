@@ -11,7 +11,7 @@ import { apiClient } from '@/lib/api'
  */
 const getBusinessUnitsEndpoint = (): string => {
   // Use the new backend endpoint structure
-  return '/common-api/api/v1/common/businessunits'
+  return '/api/businessunits'
 }
 
 /**

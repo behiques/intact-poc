@@ -11,7 +11,7 @@ import { apiClient } from '@/lib/api'
  */
 const getProducersEndpoint = (businessUnitId: string): string => {
   // Use the new backend endpoint structure with path parameter
-  return `/common-api/api/v1/common/businessunits/${businessUnitId}/producers`
+  return `/api/producers?businessUnitId=${businessUnitId}`
 }
 
 /**
