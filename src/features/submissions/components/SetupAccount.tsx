@@ -6,14 +6,10 @@ import { FormGroup } from '@/features/ui/Form/FormGroup'
 import { Button } from '@/features/ui/Form/Button'
 import { Field } from '@/features/ui/Form'
 import { useBusinessUnits } from '@/features/account-search/hooks/useBusinessUnits'
-import {
-  BusinessUnit,
-  CreateAccountFormData,
-  Producer,
-} from '@/features/account-search/types'
+import { BusinessUnit, Producer } from '@/features/account-search/types'
 import { useProducers } from '@/features/account-search/hooks/useProducers'
 import { useTerritories } from '../hooks/useTerritories'
-import { Customer, NAIC, SIC, Territory } from '../types'
+import { CreateAccountPayload, Customer, NAIC, SIC, Territory } from '../types'
 import { useSICs } from '../hooks/useSICs'
 import { useLegalEntities } from '../hooks/useLegalEntities'
 import { Alert } from '@/features/ui/Alert'
@@ -24,7 +20,7 @@ import { useNAICsBySICQuery } from '../api/fetchNAICs'
 export const SetupAccount = ({
   onSubmit,
 }: {
-  onSubmit: (data: CreateAccountFormData) => void
+  onSubmit: (data: CreateAccountPayload) => void
 }) => {
   const {
     register,

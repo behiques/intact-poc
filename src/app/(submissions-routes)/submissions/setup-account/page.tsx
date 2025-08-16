@@ -6,12 +6,15 @@ import {
   SubmissionContextType,
 } from '@/providers/create-account-provider'
 import { SetupAccount } from '@/features/submissions/components/SetupAccount'
-import { CreateAccountFormData } from '@/features/account-search/types'
+import { CreateAccountPayload } from '@/features/submissions/types'
+import { useCreateAccount } from '@/features/submissions/api/createAccount'
 
 export default function SubmissionsPage() {
   const { steps } = useContext(SubmissionContext) as SubmissionContextType
 
   const activeStep = steps.find((s) => s.status === 'current') || steps[0]
+
+  const { mutate: createAccount } = useCreateAccount()
 
   return (
     <div className="flex flex-col w-full">
@@ -24,11 +27,11 @@ export default function SubmissionsPage() {
     </div>
   )
 
-  function handleSubmit(data: CreateAccountFormData) {
+  function handleSubmit(data: CreateAccountPayload) {
     console.log({ data })
-    alert('Save functionality is not implemented yet.')
+    // alert('Save functionality is not implemented yet.')
 
-    const mockPayload: CreateAccountFormData = {
+    const mockPayload: CreateAccountPayload = {
       defaultLegalEntityId: 5,
       sicCode: '9999',
       naicsCode: '999999',
@@ -59,6 +62,13 @@ export default function SubmissionsPage() {
       territory: '002',
     }
 
-    console.log({ mockPayload })
+    createAccount.mutate(mockPayload, {
+      onSuccess: (response: unknown) => {
+        console.log('Account created successfully:', response)
+      },
+      onError: (error: unknown) => {
+        console.error('Error creating account:', error)
+      },
+    })
   }
 }

@@ -95,3 +95,41 @@ export type Customer = {
 export type CustomerSearchApiResponse = {
   data: Customer[]
 }
+
+export type CreateAccountPayload = {
+  defaultLegalEntityId: number
+  sicCode: string
+  naicsCode: string
+  businessUnit: string
+  producerCode: string
+  address: {
+    city: string
+    country: string
+    state: string
+    street: string
+    zip: string
+    mailStop?: string
+  }
+  doingBusinessAs: string[]
+  formerlyKnownAs: string[]
+  businessDescription: string
+  websiteUrl?: string
+  fein?: string
+  divisionId?: string
+  customerId?: number
+  name: {
+    name1: string
+    name2?: string
+  }
+  riskCode?: string
+  description?: string
+  dunsNumber?: string
+  territory?: string
+}
+
+export type CreateAccountApiResponse = {
+  data: {
+    id: number
+    warnings: string[]
+  }
+}

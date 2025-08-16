@@ -644,44 +644,6 @@ export type AccountSearchFormData = {
   zip?: string
 }
 
-export type CreateAccountFormData = {
-  description?: string
-  altDescription?: string
-  businessUnit?: string
-  address?: {
-    mailStop?: string
-    street?: string
-    city?: string
-    state?: string
-    zip?: string
-    country?: string
-  }
-  name?: {
-    name1?: string
-    name2?: string
-  }
-  fein?: string
-  underwriterId?: string
-  divisionId?: number | string
-  producerCode?: string
-  businessDescription?: string
-  defaultLegalEntityId?: number
-  defaultLegalEntityOtherDescription?: string
-  websiteUrl?: string
-  underwriterAssistantId?: string
-  externalId?: string
-  sicCode?: string
-  naicsCode?: string
-  riskCode?: string
-  doingBusinessAs?: string[]
-  formerlyKnownAs?: string[]
-  subsidiaries?: string[]
-  locked?: boolean
-  dunsNumber?: string
-  customerId?: number
-  territory?: string
-}
-
 /**
  * API response for account search queries from /samapi/api/clearance/v2/search
  * Follows the standard API response pattern with data wrapper
