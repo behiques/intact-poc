@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react'
 import { useCurrentToken, useToken } from './useToken'
-import { apiClient } from '@/lib/api'
+import { backendApiClient } from '@/lib/apiClient'
 import type {
   AuthenticatedRequestConfig,
   AuthenticatedResponse,
@@ -59,7 +59,7 @@ export const useAuthenticatedApi = (): UseAuthenticatedApiReturn => {
 
       try {
         // Make request using the unified API client
-        const response = await apiClient.request<T>(url, {
+        const response = await backendApiClient.request<T>(url, {
           method,
           headers,
           data: body,

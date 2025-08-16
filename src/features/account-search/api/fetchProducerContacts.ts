@@ -11,7 +11,7 @@ import { apiClient } from '@/lib/api'
  */
 const getProducerContactsEndpoint = (producerCode: string): string => {
   // Use the new backend endpoint structure with producerCode path parameter
-  return `/common-api/api/v1/common/producers/${producerCode}/contacts`
+  return `/api/producers/${producerCode}/contacts`
 }
 
 /**

@@ -118,6 +118,9 @@ importers:
       '@vitest/coverage-v8':
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
+      cross-env:
+        specifier: ^10.0.0
+        version: 10.0.0
       eslint:
         specifier: ^9.31.0
         version: 9.31.0
@@ -1675,6 +1678,10 @@ packages:
   /@emotion/weak-memoize@0.4.0:
     resolution: {integrity: sha512-snKqtPW01tN0ui7yu9rGv69aJXr/a/Ywvl11sUjNtEcRc+ng/mQriFL0wLXMef74iHa/EkftbDzU9F8iFbH+zg==}
     dev: false
+
+  /@epic-web/invariant@1.0.0:
+    resolution: {integrity: sha512-lrTPqgvfFQtR/eY/qkIzp98OGdNJu0m5ji3q/nJI8v3SXkRKEnWiOxMmbvcSoAIzv/cGiuvRy57k4suKQSAdwA==}
+    dev: true
 
   /@esbuild/aix-ppc64@0.25.6:
     resolution: {integrity: sha512-ShbM/3XxwuxjFiuVBHA+d3j5dyac0aEVVq1oluIDf71hUw0aRF59dV/efUsIwFnR6m8JNM2FjZOzmaZ8yG61kw==}
@@ -7143,6 +7150,15 @@ packages:
       ripemd160: 2.0.2
       safe-buffer: 5.2.1
       sha.js: 2.4.12
+    dev: true
+
+  /cross-env@10.0.0:
+    resolution: {integrity: sha512-aU8qlEK/nHYtVuN4p7UQgAwVljzMg8hB4YK5ThRqD2l/ziSnryncPNn7bMLt5cFYsKVKBh8HqLqyCoTupEUu7Q==}
+    engines: {node: '>=20'}
+    hasBin: true
+    dependencies:
+      '@epic-web/invariant': 1.0.0
+      cross-spawn: 7.0.6
     dev: true
 
   /cross-spawn@7.0.6:

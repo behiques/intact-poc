@@ -1,22 +1,20 @@
 import { MockApiClient } from './mock-client'
 import { ApiClient } from './api-client'
 import { realTokenProvider } from '@/lib/auth/real-token-provider'
-import { env } from '@/utils/env'
 import type { ApiClientInterface } from './types'
 
 /**
  * Determines if mock API should be used based on environment
  */
 const shouldUseMockApi = (): boolean => {
-  // Check environment variable first
+  // Check environment variable first - this is the primary control
   if (process.env.NEXT_PUBLIC_USE_MOCK_API === 'true') {
     return true
   }
 
-  // Use mock in development by default if backend is not accessible
-  if (process.env.NODE_ENV === 'development') {
-    // Could add additional logic here to check backend availability
-    return true
+  // If explicitly set to false, use real API
+  if (process.env.NEXT_PUBLIC_USE_MOCK_API === 'false') {
+    return false
   }
 
   // Always use mock in test environment
@@ -24,7 +22,9 @@ const shouldUseMockApi = (): boolean => {
     return true
   }
 
-  return false
+  // Default to mock only if NEXT_PUBLIC_USE_MOCK_API is not set at all
+  // This maintains backward compatibility for environments without the variable
+  return process.env.NODE_ENV === 'development'
 }
 
 /**
@@ -38,7 +38,7 @@ const createApiClient = (): ApiClientInterface => {
 
   console.log('🌐 Using Real API Client')
   return new ApiClient({
-    baseUrl: env.BACKEND_API_URL,
+    baseUrl: process.env.NEXT_PUBLIC_API_URL || '',
     tokenProvider: realTokenProvider,
   })
 }

@@ -2,9 +2,9 @@ import { env } from '@/utils/env'
 import type { TokenConfig } from '../types'
 
 /**
- * Token management configuration
+ * Authentication configuration
  *
- * Provides validated environment variables for token management
+ * Provides validated environment variables for authentication
  * with proper TypeScript types and runtime validation.
  */
 export const tokenConfig: TokenConfig = {
@@ -14,7 +14,7 @@ export const tokenConfig: TokenConfig = {
 }
 
 /**
- * Validates that all required token management environment variables are available
+ * Validates that all required authentication environment variables are available
  * @throws Error if any required environment variables are missing
  */
 export const validateTokenConfig = (): void => {
@@ -26,7 +26,7 @@ export const validateTokenConfig = (): void => {
 
   if (missingVars.length > 0) {
     throw new Error(
-      `Missing required environment variables for token management: ${missingVars.join(', ')}`
+      `Missing required environment variables for authentication: ${missingVars.join(', ')}`
     )
   }
 }

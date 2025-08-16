@@ -30,7 +30,7 @@ import { apiClient } from '@/lib/api'
  */
 const getAccountsEndpoint = (): string => {
   // Use the new backend clearance search endpoint structure
-  return '/samapi/api/clearance/v2/search'
+  return '/api/account-search'
 }
 
 /**
