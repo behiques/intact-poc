@@ -84,21 +84,18 @@ export class MockApiClient implements ApiClientInterface {
     const params = options.params || {}
 
     // Account Search endpoints
-    if (endpoint === '/samapi/api/clearance/v2/search' && method === 'GET') {
+    if (endpoint === '/api/account-search' && method === 'GET') {
       return getMockAccountsForSearch(params) as T
     }
 
     // Business Units endpoints - support both legacy and new backend paths
-    if (
-      endpoint === '/common-api/api/v1/common/businessunits' &&
-      method === 'GET'
-    ) {
+    if (endpoint === '/api/businessunits' && method === 'GET') {
       return getMockBusinessUnits(params) as T
     }
 
     if (
       endpoint.match(
-        /^\/common-api\/api\/v1\/common\/businessunits\/[^/]+\/producers$/
+        /^\/api\/producers\/businessUnitId?businessUnitId=\/[^/]+$/
       ) &&
       method === 'GET'
     ) {
@@ -107,9 +104,7 @@ export class MockApiClient implements ApiClientInterface {
 
     // Contacts endpoints - support both legacy and new backend paths
     if (
-      endpoint.match(
-        /^\/common-api\/api\/v1\/common\/producers\/[^/]+\/contacts$/
-      ) &&
+      endpoint.match(/^\/api\/producers\/[^/]+\/contacts$/) &&
       method === 'GET'
     ) {
       return getMockContacts(params) as T

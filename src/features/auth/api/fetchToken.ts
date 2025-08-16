@@ -1,8 +1,7 @@
-import { tokenConfig } from '../utils/config'
-import type { TokenResponse, AuthError } from '../types'
+import type { TokenResponse, AuthError } from '../types/index'
 
 /**
- * Token API Functions
+ * Authentication API Functions
  *
  * Core API functions for token retrieval and management
  * following the established patterns from the codebase.
@@ -32,11 +31,11 @@ const createAuthError = (
  */
 export const retrieveToken = async (): Promise<TokenResponse> => {
   try {
-    const response = await fetch(tokenConfig.authTokenApiUrl, {
+    // Use the Next.js API route proxy to avoid CORS issues
+    const response = await fetch('/api/auth/token', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        usersystemid: tokenConfig.userSystemId,
       },
     })
 

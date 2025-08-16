@@ -175,17 +175,17 @@ export const getMockAccountsForSearch = (params: {
   }
 
   // Return error scenario for specific test account
-  if (params.accountName === 'ERROR_TEST') {
+  if (params.AccountName === 'ERROR_TEST') {
     throw new Error('Mock API Error: Failed to fetch accounts')
   }
 
   // Return empty for no results scenario
-  if (params.accountName === 'NO_RESULTS') {
+  if (params.AccountName === 'NO_RESULTS') {
     return { data: [] }
   }
 
   // Return inactive accounts for specific search
-  if (params.accountName === 'INACTIVE') {
+  if (params.AccountName === 'INACTIVE') {
     return mockAccountsData.search.inactive
   }
 

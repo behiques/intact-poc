@@ -5,7 +5,6 @@ import type {
   ApiResponse,
   ApiError,
 } from './types'
-import { env } from '@/utils/env'
 
 /**
  * API Client for production use
@@ -20,7 +19,7 @@ export class ApiClient implements ApiClientInterface {
       defaultHeaders: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
-        usersystemid: env.USER_SYSTEM_ID,
+        usersystemid: process.env.NEXT_PUBLIC_USER_SYSTEM_ID || '',
       },
       ...config,
       tokenProvider: config.tokenProvider || undefined,
